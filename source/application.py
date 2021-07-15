@@ -1,10 +1,11 @@
 import sprite
 import tilemap
 import pygame
+import generic_object
 
-class Application():
+class Application:
 
-    def __init__(self, width, height):
+    def __init__(self, width, height) -> None:
 
         self.global_variable = {}
         g = self.global_variable
@@ -78,10 +79,12 @@ class Application():
 
         return None
 
-    def run(self):
+    def run(self) -> None:
 
         g = self.global_variable
         g["time"]["delta_time"] = g["time"]["clock"].tick()
+
+        jerry = generic_object.Generic_Object("dave", "steve")
 
         while not g["done"]:
 

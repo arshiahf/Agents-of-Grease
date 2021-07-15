@@ -6,7 +6,7 @@ def polar_to_vector2(radians:float, hypotenuse:float) -> "Vector2":
     polar_vector = Vector2(x_pos, y_pos)
     return polar_vector
 
-def dot(vector1:Vector, vector2:Vector) -> float:
+def dot(vector1:"Vector", vector2:"Vector") -> float:
 
     if not issubclass(vector1, Vector) or not issubclass(vector2, Vector):
 
@@ -27,7 +27,7 @@ def dot(vector1:Vector, vector2:Vector) -> float:
 
     return dot_product
 
-def cross(vector1:Vector3, vector2:Vector3) -> Vector3:
+def cross(vector1:"Vector3", vector2:"Vector3") -> "Vector3":
 
     if not issubclass(vector1, Vector3) or not issubclass(vector2, Vector3):
 
