@@ -8,7 +8,7 @@ def polar_to_vector2(radians:float, hypotenuse:float) -> "Vector2":
 
 def dot(vector1:"Vector", vector2:"Vector") -> float:
 
-    if not issubclass(vector1, Vector) or not issubclass(vector2, Vector):
+    if not issubclass(vector1.__class__, Vector) or not issubclass(vector2.__class__, Vector):
 
         raise TypeError("Both items given must be vectors")
         return None
@@ -29,7 +29,7 @@ def dot(vector1:"Vector", vector2:"Vector") -> float:
 
 def cross(vector1:"Vector3", vector2:"Vector3") -> "Vector3":
 
-    if not issubclass(vector1, Vector3) or not issubclass(vector2, Vector3):
+    if not issubclass(vector1.__class__, Vector3) or not issubclass(vector2.__class__, Vector3):
 
         raise TypeError("Both items given must be 3 dimensional vectors")
         return None
