@@ -1,0 +1,28 @@
+{
+  "images": [
+    "hotdog.png"
+  ],
+  "frame_dimensions": [79, 48],
+  "animations": {
+    "stand": {
+      "right": [
+        [1, 1]
+      ]
+    },
+    "walk": {
+      "right": [
+        [0, 1]
+      ]
+    },
+    "punch": {
+        "right": [
+        [3, 1]
+      ]
+    },
+    "hurt": {
+        "right": [
+        [7, 1]
+      ]
+    }
+  }
+}
