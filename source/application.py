@@ -1,7 +1,7 @@
 import sprite
 import tilemap
 import pygame
-import generic_object
+import character
 import os
 
 class Application:
@@ -23,6 +23,8 @@ class Application:
 
         g["done"] = False
 
+        pygame.init()
+
     def pull_sounds(self, sounds_path):
 
         g = self.global_variable
@@ -34,8 +36,11 @@ class Application:
 
         g = self.global_variable
         g["sprites"] = {}
+        g["sprites"]["manager"] = sprite.Sprite_Manager()
 
-        
+        for sprite_file in os.listdir(sprites_path):
+            if sprite_file.endswith(".json"):
+                g["sprites"]["manager"].load_sprite(sprites_path, sprite_file)
 
         return None
 
@@ -48,6 +53,14 @@ class Application:
         map["dimensions"] = map["tilemap"].get_dimensions()
         map["image"] = map["tilemap"].draw_map()
         map["location"] = (0, 0)
+
+        return None
+
+    def make_player(self, player_sprite):
+
+        g = self.global_variable
+
+        g["player"] = character.Character(g["screen"]["center"][0], g["screen"]["center"][1], "standGun", player_sprite, 0.1)
 
         return None
 
@@ -93,7 +106,7 @@ class Application:
         g = self.global_variable
         g["time"]["delta_time"] = g["time"]["clock"].tick()
 
-        jerry = generic_object.Generic_Object("dave", "steve")
+        self.make_player(g["sprites"]["manager"]["hotdog"])
 
         while not g["done"]:
 

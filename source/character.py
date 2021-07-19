@@ -8,3 +8,9 @@ class Character(generic_object.Generic_Object):
 
         g = self.global_variable
         g["current_action"] = current_action
+
+    def update(self, delta_time:float, map:pygame.Surface):
+
+        g = self.global_variable
+
+        return None
