@@ -2,10 +2,11 @@ import sprite
 import tilemap
 import pygame
 import generic_object
+import os
 
 class Application:
 
-    def __init__(self, width, height) -> None:
+    def __init__(self, width:int, height:int) -> None:
 
         self.global_variable = {}
         g = self.global_variable
@@ -22,11 +23,19 @@ class Application:
 
         g["done"] = False
 
-    def pull_sprites(self, sprite_list):
+    def pull_sounds(self, sounds_path):
+
+        g = self.global_variable
+        g["sounds"] = {}
+
+        return None
+
+    def pull_sprites(self, sprites_path):
 
         g = self.global_variable
         g["sprites"] = {}
 
+        
 
         return None
 
