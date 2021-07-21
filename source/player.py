@@ -24,3 +24,13 @@ class Player(character.Character):
         else:
             g["animation"]["timer"] = g["animation"]["timer_base"]
             self.animate(g["animation"]["current_action"], map, g["animation"]["current_face"])
+
+        self.travel(g["movement"]["vector"])
+        g["movement"]["vector"] = g["position"].copy()
+        g["movement"]["vector"].x += g["movement"]["vector_x_adjust"]
+        g["movement"]["vector"].y += g["movement"]["vector_y_adjust"]
+
+        return g["alive"]
+
+    def get_animation(self):
+        return self.global_variable["animation"]["current_action"]

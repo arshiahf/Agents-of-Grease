@@ -76,6 +76,22 @@ class Application:
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and all_keys[pygame.K_ESCAPE]:
                 g["done"] = True
 
+            if event.type == pygame.KEYDOWN:
+                if all_keys[pygame.K_SPACE] and g["player"].get_animation() != "jump":
+                    g["player"].move(y_adjust = -1)
+                if event.key == pygame.K_a:
+                    g["player"].move(x_adjust = -1)
+                if event.key == pygame.K_d:
+                    g["player"].move(x_adjust = 1)
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_a:
+                    g["player"].move(x_adjust = 1)
+                if event.key == pygame.K_d:
+                    g["player"].move(x_adjust = -1)
+
+
+
         return None
 
     def draw(self):

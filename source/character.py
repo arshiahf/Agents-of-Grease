@@ -19,3 +19,10 @@ class Character(generic_object.Generic_Object):
         g["movement"]["vector_x_adjust"] = 0
         g["movement"]["vector_y_adjust"] = 0
         g["movement"]["jump_strength"] = 1.0
+
+    def move(self, x_adjust:float=0.0, y_adjust:float=0.0):
+        g = self.global_variable
+        g["movement"]["vector_x_adjust"] += x_adjust
+        g["movement"]["vector_y_adjust"] += y_adjust
+
+        return None
