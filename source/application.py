@@ -60,7 +60,7 @@ class Application:
 
         g = self.global_variable
 
-        g["player"] = player.Player(g["screen"]["center"][0], g["screen"]["center"][1], "standGun", player_sprite, 0.1)
+        g["player"] = player.Player(g["screen"]["center"][0], g["screen"]["center"][1], "standGun", player_sprite, 0.15, base_speed=0.15)
 
         return None
 

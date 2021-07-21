@@ -17,6 +17,15 @@ class Player(character.Character):
 
         g = self.global_variable
 
+        if (g["position"] - g["movement"]["vector"]).is_zero:
+            g["movement"]["speed"] = 0
+            g["animation"]["current_action"] = "standGun"
+            g["animation"]["current_face"] = 0
+        else:
+            g["movement"]["speed"] = g["movement"]["base_speed"]
+            g["animation"]["current_action"] = "walkNoGun"
+            g["animation"]["current_face"] = self.direction(g["movement"]["vector"])
+
         if g["animation"]["timer"] > 0:
             g["animation"]["timer"] -= delta_time
             g["frame"] -= 1
