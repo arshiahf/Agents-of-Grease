@@ -10,7 +10,7 @@ class Character(generic_object.Generic_Object):
         g = self.global_variable
         g["animation"] = {}
         g["animation"]["current_action"] = current_action
-        g["animation"]["timer_base"] = 0.25
+        g["animation"]["timer_base"] = 0.20
         g["animation"]["timer"] = 0
         g["animation"]["current_face"] = current_face
 

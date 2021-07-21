@@ -78,17 +78,17 @@ class Application:
 
             if event.type == pygame.KEYDOWN:
                 if all_keys[pygame.K_SPACE] and g["player"].get_animation() != "jump":
-                    g["player"].move(y_adjust = -1)
+                    g["player"].move(y_adjust = -2.5)
                 if event.key == pygame.K_a:
-                    g["player"].move(x_adjust = -1)
+                    g["player"].move(x_adjust = -2.5)
                 if event.key == pygame.K_d:
-                    g["player"].move(x_adjust = 1)
+                    g["player"].move(x_adjust = 2.5)
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
-                    g["player"].move(x_adjust = 1)
+                    g["player"].move(x_adjust = 2.5)
                 if event.key == pygame.K_d:
-                    g["player"].move(x_adjust = -1)
+                    g["player"].move(x_adjust = -2.5)
 
 
 

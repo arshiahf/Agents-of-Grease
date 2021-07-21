@@ -23,7 +23,10 @@ class Player(character.Character):
             g["animation"]["current_face"] = 0
         else:
             g["movement"]["speed"] = g["movement"]["base_speed"]
-            g["animation"]["current_action"] = "walkNoGun"
+            if g["movement"]["vector_y_adjust"] != 0:
+                g["animation"]["current_action"] = "jumpGun"
+            else:
+                g["animation"]["current_action"] = "walkNoGun"
             g["animation"]["current_face"] = self.direction(g["movement"]["vector"])
 
         if g["animation"]["timer"] > 0:
@@ -38,6 +41,8 @@ class Player(character.Character):
         g["movement"]["vector"] = g["position"].copy()
         g["movement"]["vector"].x += g["movement"]["vector_x_adjust"]
         g["movement"]["vector"].y += g["movement"]["vector_y_adjust"]
+        if g["movement"]["vector_y_adjust"] != 0:
+            g["movement"]["vector_y_adjust"] += g["movement"]["gravity"]
 
         return g["alive"]
 

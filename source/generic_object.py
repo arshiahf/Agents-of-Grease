@@ -1,5 +1,6 @@
 import pygame
 import vector
+import math
 
 class Generic_Object:
 
@@ -11,6 +12,7 @@ class Generic_Object:
         g["position"] = vector.Vector2(pos_x, pos_y)
         g["movement"] = {}
         g["movement"]["speed"] = speed
+        g["movement"]["gravity"] = 0.0025
         g["alive"] = True
 
         if sprite != None:
@@ -48,5 +50,9 @@ class Generic_Object:
 
     def animate(self, animation:str, map:pygame.Surface, direction:float):
         g = self.global_variable
+        if direction < math.pi / 2 and direction >= -math.pi / 2:
+            direction = 0
+        else:
+            direction = math.pi
         g["frame"], sprite_location, spritesheet = g["sprite"].call_frame(animation, direction, g["frame"])
         map.blit(spritesheet, g["position"], sprite_location)
