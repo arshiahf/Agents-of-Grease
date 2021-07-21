@@ -9,7 +9,8 @@ class Generic_Object:
         g = self.global_variable
 
         g["position"] = vector.Vector2(pos_x, pos_y)
-        g["speed"] = speed
+        g["movement"] = {}
+        g["movement"]["speed"] = speed
         g["alive"] = True
 
         if sprite != None:
@@ -22,10 +23,28 @@ class Generic_Object:
 
     @pos.setter
     def pos(self, new_vector:vector.Vector2):
-        if not issubclass(vector.Vector2, new_vector):
+        if not issubclass(new_vector, vector.Vector2):
             raise TypeError("Assignable for position must be a Vector2.")
         else:
             self.global_variable["position"] = new_vector.copy()
+
+    def distance(self, other_object:vector.Vector2):
+
+        distance_vector = other_object - self.pos
+        return distance_vector.magnitude
+
+    def direction(self, other_object:vector.Vector2):
+
+        distance_vector = other_object - self.pos
+        return distance_vector.radians
+
+    def speed_vector(self, other_object:vector.Vector2):
+
+        distance_vector = other_object - self.pos
+        return distance_vector.normalized
+
+    def travel(self, destination:vector.Vector2):
+        self.global_variable["position"] += self.global_variable["movement"]["speed"] * self.speed_vector(destination)
 
     def animate(self, animation:str, map:pygame.Surface, direction:float):
         g = self.global_variable

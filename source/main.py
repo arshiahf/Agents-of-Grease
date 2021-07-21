@@ -5,6 +5,6 @@ game_sprites = "..\\assets\\art\\sprites\\"
 game_sounds = "..\\assets\\sound\\finished_sounds\\"
 
 app = application.Application(800, 600)
-# app.pull_sprites(game_sprites)
+app.pull_sprites(game_sprites)
 # app.set_map(game_starting_map)
 app.run()

@@ -1,7 +1,7 @@
 import sprite
 import tilemap
 import pygame
-import character
+import player
 import os
 
 class Application:
@@ -60,7 +60,7 @@ class Application:
 
         g = self.global_variable
 
-        g["player"] = character.Character(g["screen"]["center"][0], g["screen"]["center"][1], "standGun", player_sprite, 0.1)
+        g["player"] = player.Player(g["screen"]["center"][0], g["screen"]["center"][1], "standGun", player_sprite, 0.1)
 
         return None
 
@@ -83,6 +83,7 @@ class Application:
         g = self.global_variable
 
         g["screen"]["window"].fill(g["screen"]["fill_color"])
+        g["player"].update(g["time"]["delta_time"], g["screen"]["window"])
 
 
         pygame.display.flip()
@@ -92,7 +93,7 @@ class Application:
     def update(self):
 
         g = self.global_variable
-        g["time"]["delta_time"] = g["time"]["clock"].tick()
+        g["time"]["delta_time"] = g["time"]["clock"].tick() / 1000
 
         self.get_input()
         self.draw()
