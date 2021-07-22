@@ -110,13 +110,14 @@ class Application:
 
         ####7/22/2021 New Contet#######
         if all_mouse[0]:
-            Projectile.Projectitle(g["K_proj"], g["spawn"], g["postiton"], g["speed"], range=1)
+            Projectile.Projectitle.shoot(g["K_proj"], g["spawn"], g["postiton"], g["speed"])
 
         if all_mouse[1]:
-            Projectile.Projectitle(g["M_proj"], g["spawn"], g["postiton"], g["speed"], range=1)
+            Projectile.Projectitle.shoot(g["M_proj"], g["spawn"], g["postiton"], g["speed"])
 
-        if all_mouse[0] or [1]:
-            Projectile.Projectitle(g["R_proj"], g["spawn"], g["postiton"], g["speed"], range=10)
+        if Items.Rocket.pickle_jar != True:
+            if all_mouse[0] or [1]:
+                Projectile.Projectitle.shoot(g["R_proj"], g["spawn"], g["postiton"], g["speed"])
 
         #####End Addition##############
 
