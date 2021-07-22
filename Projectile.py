@@ -45,7 +45,7 @@ class Projectitle(Items.Items):
 
     # New Parts
     def shoot(self, position, hit, speed):
-        Projectitle.__init__["shoot"] ={}
+        Projectitle.__init__ ={}
         self.position = player.Player
         g = self.global_variable
 
