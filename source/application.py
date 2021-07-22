@@ -4,18 +4,21 @@ import pygame
 import player
 import os
 
+
 class Application:
 
-    def __init__(self, width:int, height:int) -> None:
+    def __init__(self, width: int, height: int) -> None:
 
         self.global_variable = {}
         g = self.global_variable
 
         g["screen"] = {}
         g["screen"]["dimensions"] = (width, height)
-        g["screen"]["center"] = (g["screen"]["dimensions"][0] / 2, g["screen"]["dimensions"][1] / 2)
+        g["screen"]["center"] = (
+            g["screen"]["dimensions"][0] / 2, g["screen"]["dimensions"][1] / 2)
         g["screen"]["fill_color"] = pygame.color.Color((200, 200, 200))
-        g["screen"]["window"] = pygame.display.set_mode(g["screen"]["dimensions"])
+        g["screen"]["window"] = pygame.display.set_mode(
+            g["screen"]["dimensions"])
 
         g["time"] = {}
         g["time"]["clock"] = pygame.time.Clock()
@@ -60,7 +63,9 @@ class Application:
 
         g = self.global_variable
 
-        g["player"] = player.Player(g["screen"]["center"][0], g["screen"]["center"][1], "standGun", player_sprite, 0.15, base_speed=0.15)
+        g["player"] = player.Player(g["screen"]["center"][0], g["screen"]
+                                    ["center"][1], "standGun", player_sprite,
+                                    0.15, base_speed=0.15)
 
         return None
 
@@ -78,19 +83,17 @@ class Application:
 
             if event.type == pygame.KEYDOWN:
                 if all_keys[pygame.K_SPACE] and g["player"].get_animation() != "jump":
-                    g["player"].move(y_adjust = -2.5)
+                    g["player"].move(y_adjust=-2.5)
                 if event.key == pygame.K_a:
-                    g["player"].move(x_adjust = -2.5)
+                    g["player"].move(x_adjust=-2.5)
                 if event.key == pygame.K_d:
-                    g["player"].move(x_adjust = 2.5)
+                    g["player"].move(x_adjust=2.5)
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
-                    g["player"].move(x_adjust = 2.5)
+                    g["player"].move(x_adjust=2.5)
                 if event.key == pygame.K_d:
-                    g["player"].move(x_adjust = -2.5)
-
-
+                    g["player"].move(x_adjust=-2.5)
 
         return None
 
@@ -100,7 +103,6 @@ class Application:
 
         g["screen"]["window"].fill(g["screen"]["fill_color"])
         g["player"].update(g["time"]["delta_time"], g["screen"]["window"])
-
 
         pygame.display.flip()
 

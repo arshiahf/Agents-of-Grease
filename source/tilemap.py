@@ -6,6 +6,7 @@ import math
 
 # Class for interpreting a Tiled tilemap file
 
+
 class Tilemap:
 
     def __init__(self, filename):
@@ -86,8 +87,10 @@ class Tilemap:
 
         # Dereference the tileset's json file
         for tileset in self.map["tilesets"]:
-            self.map["path_tileset"] = self.map["path"] + tileset["source"][:tileset["source"].rfind("/") + 1]
-            tileset_file = open(self.map["path_tileset"] + tileset["source"][tileset["source"].find("/"):], "r")
+            self.map["path_tileset"] = self.map["path"] + \
+                tileset["source"][:tileset["source"].rfind("/") + 1]
+            tileset_file = open(
+                self.map["path_tileset"] + tileset["source"][tileset["source"].find("/"):], "r")
             tileset_json = json.load(tileset_file)
             tileset["source"] = tileset_json
             tileset_file.close()
@@ -110,12 +113,14 @@ class Tilemap:
                         for child in layer:
                             # Extracts the layer details and turns them into a numerical list
                             child_content_list = []
-                            char_list = re.sub('[\s+]', '', child.text).split(',')
+                            char_list = re.sub(
+                                '[\s+]', '', child.text).split(',')
                             for character in char_list:
                                 character = int(character)
                                 child_content_list.append(character)
                             # child_dict = {:}
-                            map_location = self.map[key][len(self.map[key]) - 1]
+                            map_location = self.map[key][len(
+                                self.map[key]) - 1]
                             map_location[child.tag] = child_content_list
                         if "x" not in map_location.keys():
                             map_location["x"] = 0
@@ -128,11 +133,14 @@ class Tilemap:
                         tileset_dict = {}
                         for tile_attr in tileset.attrib:
                             if tile_attr != "source":
-                                tileset_dict[tile_attr] = tileset.get(tile_attr)
+                                tileset_dict[tile_attr] = tileset.get(
+                                    tile_attr)
                             else:
                                 # Dereferences source file
-                                self.map["path_tileset"] = self.map["path"] + tileset.get(tile_attr)[:tileset.get(tile_attr).rfind("/") + 1]
-                                tileset_file = open(self.map["path_tileset"] + tileset.get(tile_attr)[tileset.get(tile_attr).find("/"):], "r")
+                                self.map["path_tileset"] = self.map["path"] + tileset.get(
+                                    tile_attr)[:tileset.get(tile_attr).rfind("/") + 1]
+                                tileset_file = open(
+                                    self.map["path_tileset"] + tileset.get(tile_attr)[tileset.get(tile_attr).find("/"):], "r")
                                 tileset_xml = ET.parse(tileset_file).getroot()
 
                                 source_dict = tileset_xml.attrib
@@ -140,9 +148,12 @@ class Tilemap:
                                     child_dict = child.attrib
                                     source_dict[child.tag] = child_dict
                                 tileset_file.close()
-                                source_dict["imagewidth"] = source_dict["image"].pop("width")
-                                source_dict["imageheight"] = source_dict["image"].pop("height")
-                                source_dict["image"] = source_dict["image"].pop("source")
+                                source_dict["imagewidth"] = source_dict["image"].pop(
+                                    "width")
+                                source_dict["imageheight"] = source_dict["image"].pop(
+                                    "height")
+                                source_dict["image"] = source_dict["image"].pop(
+                                    "source")
                                 if "spacing" not in source_dict:
                                     source_dict["spacing"] = 0
                                 tileset_dict[tile_attr] = source_dict
@@ -167,7 +178,8 @@ class Tilemap:
     def draw_map(self):
 
         for tileset in self.map["tilesets"]:
-            tileset["source"]["image"] = pygame.image.load(self.map["path_tileset"] + tileset["source"]["image"]).convert_alpha()
+            tileset["source"]["image"] = pygame.image.load(
+                self.map["path_tileset"] + tileset["source"]["image"]).convert_alpha()
         map_surface = pygame.Surface(self.map["dimensions"])
 
         for layer in self.map["layers"]:
@@ -184,14 +196,17 @@ class Tilemap:
 
                 for tileset in self.map["tilesets"]:
                     if current_tile >= tileset["firstgid"] and current_tile < tileset["source"]["tilecount"] + tileset["firstgid"]:
-                        current_tile_spot = (current_tile - tileset["firstgid"]) % tileset["source"]["tilecount"]
-                        blit_coords = (local_x + (column % self.map["width"]) * self.map["tilewidth"], local_y + row * self.map["tileheight"])
-                        tile_coords_x = (current_tile_spot % tileset["source"]["columns"]) * self.map["tilewidth"] + (current_tile_spot % tileset["source"]["columns"]) * tileset["source"]["spacing"]
-                        tile_coords_y = math.floor(current_tile_spot / tileset["source"]["columns"]) * self.map["tileheight"] + math.floor(current_tile_spot / tileset["source"]["columns"]) * tileset["source"]["spacing"]
+                        current_tile_spot = (
+                            current_tile - tileset["firstgid"]) % tileset["source"]["tilecount"]
+                        blit_coords = (
+                            local_x + (column % self.map["width"]) * self.map["tilewidth"], local_y + row * self.map["tileheight"])
+                        tile_coords_x = (current_tile_spot % tileset["source"]["columns"]) * self.map["tilewidth"] + (
+                            current_tile_spot % tileset["source"]["columns"]) * tileset["source"]["spacing"]
+                        tile_coords_y = math.floor(current_tile_spot / tileset["source"]["columns"]) * self.map["tileheight"] + math.floor(
+                            current_tile_spot / tileset["source"]["columns"]) * tileset["source"]["spacing"]
                         tile_coords = (tile_coords_x, tile_coords_y)
-                        map_surface.blit(tileset["source"]["image"], blit_coords, pygame.rect.Rect(tile_coords, (self.map["tilewidth"], self.map["tileheight"])))
+                        map_surface.blit(tileset["source"]["image"], blit_coords, pygame.rect.Rect(
+                            tile_coords, (self.map["tilewidth"], self.map["tileheight"])))
                         break
-
-
 
         return map_surface

@@ -1,12 +1,14 @@
 import math
 
-def polar_to_vector2(radians:float, hypotenuse:float) -> "Vector2":
+
+def polar_to_vector2(radians: float, hypotenuse: float) -> "Vector2":
     x_pos = math.cos(radians) * hypotenuse
     y_pos = math.sin(radians) * hypotenuse
     polar_vector = Vector2(x_pos, y_pos)
     return polar_vector
 
-def dot(vector1:"Vector", vector2:"Vector") -> float:
+
+def dot(vector1: "Vector", vector2: "Vector") -> float:
 
     if not issubclass(vector1.__class__, Vector) or not issubclass(vector2.__class__, Vector):
 
@@ -27,7 +29,8 @@ def dot(vector1:"Vector", vector2:"Vector") -> float:
 
     return dot_product
 
-def cross(vector1:"Vector3", vector2:"Vector3") -> "Vector3":
+
+def cross(vector1: "Vector3", vector2: "Vector3") -> "Vector3":
 
     if not issubclass(vector1.__class__, Vector3) or not issubclass(vector2.__class__, Vector3):
 
@@ -38,11 +41,15 @@ def cross(vector1:"Vector3", vector2:"Vector3") -> "Vector3":
     vector1_math = vector1.copy()
     vector2_math = vector2.copy()
 
-    cross_product[0] = vector1_math[1] * vector2_math[2] - vector1_math[2] * vector2_math[1]
-    cross_product[1] = -1 * (vector1_math[0] * vector2_math[2] - vector1_math[2] * vector2_math[0])
-    cross_product[2] = vector1_math[0] * vector2_math[1] - vector1_math[1] * vector2_math[0]
+    cross_product[0] = vector1_math[1] * \
+        vector2_math[2] - vector1_math[2] * vector2_math[1]
+    cross_product[1] = -1 * (vector1_math[0] *
+                             vector2_math[2] - vector1_math[2] * vector2_math[0])
+    cross_product[2] = vector1_math[0] * \
+        vector2_math[1] - vector1_math[1] * vector2_math[0]
 
     return cross_product
+
 
 class Vector:
 
@@ -69,37 +76,37 @@ class Vector:
     def __len__(self):
         return self.mDim
 
-    def __getitem__(self, index:int):
+    def __getitem__(self, index: int):
         return self.mData[index]
 
-    def __setitem__(self, index:int, new_value):
+    def __setitem__(self, index: int, new_value):
         self.mData[index] = float(new_value)
 
-    def __add__(self, add_vector:"Vector"):
+    def __add__(self, add_vector: "Vector"):
         return_vector = self.copy()
         for i in range(self.mDim):
             return_vector[i] += add_vector[i]
         return return_vector
 
-    def __sub__(self, sub_vector:"Vector"):
+    def __sub__(self, sub_vector: "Vector"):
         return_vector = self.copy()
         for i in range(self.mDim):
             return_vector[i] -= sub_vector[i]
         return return_vector
 
-    def __mul__(self, scalar:float):
+    def __mul__(self, scalar: float):
         return_vector = self.copy()
         for i in range(self.mDim):
             return_vector[i] *= scalar
         return return_vector
 
-    def __rmul__(self, scalar:float):
+    def __rmul__(self, scalar: float):
         return_vector = self.copy()
         for i in range(self.mDim):
             return_vector[i] *= scalar
         return return_vector
 
-    def __truediv__(self, scalar:float):
+    def __truediv__(self, scalar: float):
         return_vector = self.copy()
         for i in range(self.mDim):
             return_vector[i] /= scalar
@@ -162,9 +169,10 @@ class Vector:
                 return False
         return True
 
+
 class Vector2(Vector):
 
-    def __init__(self, x:float, y:float):
+    def __init__(self, x: float, y: float):
         super().__init__(x, y)
 
     @property
@@ -172,7 +180,7 @@ class Vector2(Vector):
         return self.mData[0]
 
     @x.setter
-    def x(self, new_value:float):
+    def x(self, new_value: float):
         self.mData[0] = float(new_value)
 
     @property
@@ -180,7 +188,7 @@ class Vector2(Vector):
         return self.mData[1]
 
     @y.setter
-    def y(self, new_value:float):
+    def y(self, new_value: float):
         self.mData[1] = float(new_value)
 
     @property
@@ -195,9 +203,10 @@ class Vector2(Vector):
         new_vector = Vector2(*self.mData)
         return new_vector
 
+
 class Vector3(Vector):
 
-    def __init__(self, x:float, y:float, z:float):
+    def __init__(self, x: float, y: float, z: float):
         super().__init__(x, y, z)
 
     @property
@@ -205,7 +214,7 @@ class Vector3(Vector):
         return self.mData[0]
 
     @x.setter
-    def x(self, new_value:float):
+    def x(self, new_value: float):
         self.mData[0] = float(new_value)
 
     @property
@@ -213,7 +222,7 @@ class Vector3(Vector):
         return self.mData[1]
 
     @y.setter
-    def y(self, new_value:float):
+    def y(self, new_value: float):
         self.mData[1] = float(new_value)
 
     @property
@@ -221,7 +230,7 @@ class Vector3(Vector):
         return self.mData[2]
 
     @z.setter
-    def z(self, new_value:float):
+    def z(self, new_value: float):
         self.mData[2] = float(new_value)
 
     def copy(self):

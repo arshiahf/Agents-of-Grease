@@ -2,9 +2,10 @@ import pygame
 import vector
 import math
 
+
 class Generic_Object:
 
-    def __init__(self, pos_x:float, pos_y:float, sprite:dict=None, speed:float=0.0, physics_type:string="dynamic"):
+    def __init__(self, pos_x: float, pos_y: float, sprite: dict = None, speed: float = 0.0, physics_type: str = "dynamic"):
 
         self.global_variable = {}
         g = self.global_variable
@@ -19,7 +20,7 @@ class Generic_Object:
         elif physics_type == "static" or physics_type == "kinematic":
             g["movement"]["gravity"] = 0.0
 
-        if sprite != None:
+        if sprite is not None:
             g["sprite"] = sprite
             g["frame"] = -1
 
@@ -28,35 +29,37 @@ class Generic_Object:
         return self.global_variable["position"].copy()
 
     @pos.setter
-    def pos(self, new_vector:vector.Vector2):
+    def pos(self, new_vector: vector.Vector2):
         if not issubclass(new_vector, vector.Vector2):
             raise TypeError("Assignable for position must be a Vector2.")
         else:
             self.global_variable["position"] = new_vector.copy()
 
-    def distance(self, other_object:vector.Vector2):
+    def distance(self, other_object: vector.Vector2):
 
         distance_vector = other_object - self.pos
         return distance_vector.magnitude
 
-    def direction(self, other_object:vector.Vector2):
+    def direction(self, other_object: vector.Vector2):
 
         distance_vector = other_object - self.pos
         return distance_vector.radians
 
-    def speed_vector(self, other_object:vector.Vector2):
+    def speed_vector(self, other_object: vector.Vector2):
 
         distance_vector = other_object - self.pos
         return distance_vector.normalized
 
-    def travel(self, destination:vector.Vector2):
-        self.global_variable["position"] += self.global_variable["movement"]["speed"] * self.speed_vector(destination)
+    def travel(self, destination: vector.Vector2):
+        self.global_variable["position"] += self.global_variable["movement"]["speed"] * \
+            self.speed_vector(destination)
 
-    def animate(self, animation:str, map:pygame.Surface, direction:float):
+    def animate(self, animation: str, map: pygame.Surface, direction: float):
         g = self.global_variable
         if direction < math.pi / 2 and direction >= -math.pi / 2:
             direction = 0
         else:
             direction = math.pi
-        g["frame"], sprite_location, spritesheet = g["sprite"].call_frame(animation, direction, g["frame"])
+        g["frame"], sprite_location, spritesheet = g["sprite"].call_frame(
+            animation, direction, g["frame"])
         map.blit(spritesheet, g["position"], sprite_location)
