@@ -1,1 +1,2 @@
 7/22/2021 Start 9:00 a.m.
+1st goal: Make collision capabilities.

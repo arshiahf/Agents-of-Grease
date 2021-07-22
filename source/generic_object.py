@@ -4,7 +4,7 @@ import math
 
 class Generic_Object:
 
-    def __init__(self, pos_x:float, pos_y:float, sprite:dict=None, speed:float=0.0):
+    def __init__(self, pos_x:float, pos_y:float, sprite:dict=None, speed:float=0.0, physics_type:string="dynamic"):
 
         self.global_variable = {}
         g = self.global_variable
@@ -12,8 +12,12 @@ class Generic_Object:
         g["position"] = vector.Vector2(pos_x, pos_y)
         g["movement"] = {}
         g["movement"]["speed"] = speed
-        g["movement"]["gravity"] = 0.0025
         g["alive"] = True
+
+        if physics_type == "dynamic":
+            g["movement"]["gravity"] = 0.0025
+        elif physics_type == "static" or physics_type == "kinematic":
+            g["movement"]["gravity"] = 0.0
 
         if sprite != None:
             g["sprite"] = sprite
