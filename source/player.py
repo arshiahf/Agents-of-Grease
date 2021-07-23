@@ -25,7 +25,7 @@ class Player(character.Character):
             g["animation"]["current_face"] = 0
         else:
             g["movement"]["speed"] = g["movement"]["base_speed"]
-            if g["movement"]["vector_y_adjust"] != 0:
+            if g["movement"]["vector_y_adjust"] != 0 and g["animation"]["current_action"] != "hurt":
                 g["animation"]["current_action"] = "jumpGun"
             else:
                 g["animation"]["current_action"] = "walkNoGun"
@@ -42,14 +42,18 @@ class Player(character.Character):
             self.animate(g["animation"]["current_action"],
                          map, g["animation"]["current_face"])
 
-        self.travel(g["movement"]["vector"])
+        self.travel(g["movement"]["vector"], g["movement"]["speed"])
         g["movement"]["vector"] = g["position"].copy()
         g["movement"]["vector"].x += g["movement"]["vector_x_adjust"]
         g["movement"]["vector"].y += g["movement"]["vector_y_adjust"]
-        if g["movement"]["vector_y_adjust"] != 0:
-            g["movement"]["vector_y_adjust"] += g["movement"]["gravity"]
+        g["movement"]["vector_y_adjust"] += g["movement"]["gravity"]
+        if g["movement"]["gravity"] == 0.0:
+            g["movement"]["vector_y_adjust"] = 0.0
 
         return g["alive"]
 
     def get_animation(self):
         return self.global_variable["animation"]["current_action"]
+
+    def jumping(self):
+        return self.global_variable["movement"]["vector_y_adjust"] < 0.0
