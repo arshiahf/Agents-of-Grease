@@ -1,0 +1,13 @@
+{
+  "images": [
+    "log_big.png"
+  ],
+  "frame_dimensions": [100, 15],
+  "animations":{
+    "log": {
+      "right": [
+        [0, 0]
+      ]
+    }
+  }
+}
