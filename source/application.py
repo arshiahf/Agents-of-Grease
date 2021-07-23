@@ -2,6 +2,8 @@ import sprite
 import tilemap
 import pygame
 import player
+import Items
+import Projectile
 import platform
 import os
 
@@ -73,6 +75,22 @@ class Application:
 
         return None
 
+    ####7/22/2021 New Contet#######
+    def make_items(self, item_sprite):
+        g = self.global_variable
+
+        g["item"] = Items.Items(g["screen"]["spawn"][0], g["screen"]["spawn"][1], item_sprite)
+
+        return None
+
+    def make_projectile(self, projectile_sprite, speed_vector):
+        g = self.global_variable
+
+        g["projectile"] = Projectile.Projectitle(g["screen"]["center"][0], g["screen"]["spawn"][1], projectile_sprite, speed_vector, range=1)
+
+        return None
+    #######End Addition#############
+
     def make_platform(self, x: float, y: float, plat_sprite: sprite.Sprite):
         plat = platform.Platform(x, y, sprite=plat_sprite)
         self.global_variable["objects"]["platforms"].append(plat)
@@ -103,8 +121,21 @@ class Application:
                 if event.key == pygame.K_a:
                     g["player"].move(x_adjust=2.5)
                 if event.key == pygame.K_d:
-                    g["player"].move(x_adjust=-2.5)
+                    g["player"].move(x_adjust = -2.5)
 
+        ####7/22/2021 New Contet#######
+        if all_mouse[0]:
+            Projectile.Projectitle.shoot(g["K_proj"], g["spawn"], g["postiton"], g["speed"])
+
+        if all_mouse[1]:
+            Projectile.Projectitle.shoot(g["M_proj"], g["spawn"], g["postiton"], g["speed"])
+
+        if Items.Rocket.pickle_jar != True:
+            if all_mouse[0] or [1]:
+                Projectile.Projectitle.shoot(g["R_proj"], g["spawn"], g["postiton"], g["speed"])
+
+        #####End Addition##############
+            g["player"].move(x_adjust=-2.5)
         return None
 
     def draw(self):

@@ -1,0 +1,14 @@
+{ "columns":10,
+ "image":"ETGG1809\/GitHub\/Agents-of-Grease\/assets\/art\/Map\/BackGround_SpriteSheet_AOG.png",
+ "imageheight":500,
+ "imagewidth":500,
+ "margin":0,
+ "name":"BackGround_SpriteSheet_AOG",
+ "spacing":0,
+ "tilecount":100,
+ "tiledversion":"1.7.0",
+ "tileheight":50,
+ "tilewidth":50,
+ "type":"tileset",
+ "version":"1.6"
+}
