@@ -6,3 +6,6 @@ Atom IDE had major issue, troubleshooting until finished, then restarting goals.
 
 5:45 p.m.
 Finished fixing Atom IDE issue, restarting collision checking project.
+
+9:40 p.m.
+Partial platform collision complete, jumping while on platform still incomplete
