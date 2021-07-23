@@ -1,2 +1,8 @@
 7/22/2021 Start 9:00 a.m.
 1st goal: Make collision capabilities.
+
+9:30 a.m.
+Atom IDE had major issue, troubleshooting until finished, then restarting goals.
+
+5:45 p.m.
+Finished fixing Atom IDE issue, restarting collision checking project.

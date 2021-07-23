@@ -2,26 +2,34 @@ import sprite
 import tilemap
 import pygame
 import player
-import Projectile
 import Items
+import Projectile
+import platform
 import os
+
 
 class Application:
 
-    def __init__(self, width:int, height:int) -> None:
+    def __init__(self, width: int, height: int) -> None:
 
         self.global_variable = {}
         g = self.global_variable
 
         g["screen"] = {}
         g["screen"]["dimensions"] = (width, height)
-        g["screen"]["center"] = (g["screen"]["dimensions"][0] / 2, g["screen"]["dimensions"][1] / 2)
+        g["screen"]["center"] = (
+            g["screen"]["dimensions"][0] / 2, g["screen"]["dimensions"][1] / 2)
         g["screen"]["fill_color"] = pygame.color.Color((200, 200, 200))
-        g["screen"]["window"] = pygame.display.set_mode(g["screen"]["dimensions"])
+        g["screen"]["window"] = pygame.display.set_mode(
+            g["screen"]["dimensions"])
 
         g["time"] = {}
         g["time"]["clock"] = pygame.time.Clock()
         g["time"]["delta_time"] = g["time"]["clock"].tick()
+
+        g["objects"] = {}
+        g["objects"]["platforms"] = []
+        g["objects"]["enemies"] = []
 
         g["done"] = False
 
@@ -58,11 +66,12 @@ class Application:
 
         return None
 
-    def make_player(self, player_sprite):
+    def make_player(self, x: float, y: float, current_action, player_sprite: sprite.Sprite):
 
         g = self.global_variable
 
-        g["player"] = player.Player(g["screen"]["center"][0], g["screen"]["center"][1], "standGun", player_sprite, 0.15, base_speed=0.15)
+        g["player"] = player.Player(x, y, current_action, player_sprite,
+                                    0.15, base_speed=0.15)
 
         return None
 
@@ -82,6 +91,11 @@ class Application:
         return None
     #######End Addition#############
 
+    def make_platform(self, x: float, y: float, plat_sprite: sprite.Sprite):
+        plat = platform.Platform(x, y, sprite=plat_sprite)
+        self.global_variable["objects"]["platforms"].append(plat)
+        print(self.global_variable["objects"]["platforms"])
+
     def get_input(self):
 
         g = self.global_variable
@@ -95,16 +109,17 @@ class Application:
                 g["done"] = True
 
             if event.type == pygame.KEYDOWN:
-                if all_keys[pygame.K_SPACE] and g["player"].get_animation() != "jump":
-                    g["player"].move(y_adjust = -2.5)
+                if all_keys[pygame.K_SPACE]:
+                    if g["player"].get_animation() != "jump" and g["player"].get_animation() != "jumpGun":
+                        g["player"].move(y_adjust=-2.5)
                 if event.key == pygame.K_a:
-                    g["player"].move(x_adjust = -2.5)
+                    g["player"].move(x_adjust=-2.5)
                 if event.key == pygame.K_d:
-                    g["player"].move(x_adjust = 2.5)
+                    g["player"].move(x_adjust=2.5)
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
-                    g["player"].move(x_adjust = 2.5)
+                    g["player"].move(x_adjust=2.5)
                 if event.key == pygame.K_d:
                     g["player"].move(x_adjust = -2.5)
 
@@ -120,7 +135,7 @@ class Application:
                 Projectile.Projectitle.shoot(g["R_proj"], g["spawn"], g["postiton"], g["speed"])
 
         #####End Addition##############
-
+            g["player"].move(x_adjust=-2.5)
         return None
 
     def draw(self):
@@ -128,8 +143,12 @@ class Application:
         g = self.global_variable
 
         g["screen"]["window"].fill(g["screen"]["fill_color"])
-        g["player"].update(g["time"]["delta_time"], g["screen"]["window"])
 
+        for plat in range(len(g["objects"]["platforms"])):
+            g["objects"]["platforms"][plat].update(
+                g["time"]["delta_time"], g["screen"]["window"])
+
+        g["player"].update(g["time"]["delta_time"], g["screen"]["window"])
 
         pygame.display.flip()
 
@@ -143,6 +162,17 @@ class Application:
         self.get_input()
         self.draw()
 
+        for other_object in range(len(g["objects"]["enemies"])):
+            if g["player"].collide(g["objects"]["enemies"][other_object]):
+                g["player"].global_variable["animation"]["current_action"] = "hurt"
+                g["objects"]["enemies"][other_object].global_variable["animation"]["current_action"] = "attack"
+
+        for other_object in range(len(g["objects"]["platforms"])):
+            if not g["player"].collide(g["objects"]["platforms"][other_object]):
+                g["player"].restore_grav()
+            else:
+                break
+
         pygame.event.pump()
 
         return None
@@ -152,7 +182,10 @@ class Application:
         g = self.global_variable
         g["time"]["delta_time"] = g["time"]["clock"].tick()
 
-        self.make_player(g["sprites"]["manager"]["hotdog"])
+        self.make_player(g["screen"]["center"][0], g["screen"]["center"]
+                         [1], "standGun", g["sprites"]["manager"]["hotdog"])
+        self.make_platform(g["screen"]["center"][0], g["screen"]["center"]
+                           [1] + 75, g["sprites"]["manager"]["log_big"])
 
         while not g["done"]:
 
