@@ -27,7 +27,7 @@ class Projectitle(Items.Items):
             glob["move_timer"] = glob["move_time_base"]
             self.animate("fly", map, self.direction(glob["direction"]))
 
-        self.travel(glob["direction"])
+        self.travel(glob["direction"], glob["speed"])
         glob["direction"] += glob["speed"] * self.speed_vector(glob["direction"])
 
         if self.distance(glob["origin"]) > glob["range"]:
@@ -49,10 +49,10 @@ class Projectitle(Items.Items):
         self.position = player.Player
         g = self.global_variable
 
-        g["K_proj"] = position * speed
+        g["K_proj"] = position - speed
         g["M_proj"] = position * speed
         g["R_proj"] = position * speed
 
         if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
             g["enemy"]["sprite"] = "defeat"
-
+        return None

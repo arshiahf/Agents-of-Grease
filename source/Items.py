@@ -37,7 +37,7 @@ class Rocket:
         if Items.__class__(0, 0, ) != None:
             generic_object.Generic_Object.__init__(g["spawn"], g["position"], g["pickup"])
             if Rocket.pickle_jar(self, 0, 0, sprite) != 1:
-                g["pickle_jar"] = sprite
+                g["pickle_jar"] = g["sprite"]
                 g["frame"] = -1
 
     def update(self, grab, cur_x, cur_y, new_x, new_y):
