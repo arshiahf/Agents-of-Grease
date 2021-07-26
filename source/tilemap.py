@@ -87,13 +87,17 @@ class Tilemap:
 
         # Dereference the tileset's json file
         for tileset in self.map["tilesets"]:
-            self.map["path_tileset"] = self.map["path"] + \
-                tileset["source"][:tileset["source"].rfind("/") + 1]
-            tileset_file = open(
-                self.map["path_tileset"] + tileset["source"][tileset["source"].find("/"):], "r")
-            tileset_json = json.load(tileset_file)
-            tileset["source"] = tileset_json
-            tileset_file.close()
+            if "source" in tileset:
+                self.map["path_tileset"] = self.map["path"] + \
+                    tileset["source"][:tileset["source"].rfind("/") + 1]
+                tileset_file = open(
+                    self.map["path_tileset"] + tileset["source"][tileset["source"].find("/"):], "r")
+                tileset_json = json.load(tileset_file)
+                tileset["source"] = tileset_json
+                tileset_file.close()
+            else:
+                tileset["source"] = tileset
+                self.map["path_tileset"] = self.map["path"]
 
         return None
 

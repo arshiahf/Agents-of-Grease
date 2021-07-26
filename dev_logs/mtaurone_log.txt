@@ -22,3 +22,11 @@ Passthrough from below should also work, will test.
 
 9:35 p.m.
 Confirmed passthrough from below works with dynamic to static bodies.
+
+7/26/2021
+12:00 a.m.
+Started setting up map and objects, need to update tilemap.py to allow for non-tileset image references
+
+2:45 a.m.
+Finished implementing object and map setup.
+Discovered need to work on collision size of smaller platforms

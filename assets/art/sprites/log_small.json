@@ -1,0 +1,14 @@
+{
+  "images": [
+    "log_small.png"
+  ],
+  "frame_dimensions": [19, 7],
+  "is_static": true,
+  "animations":{
+    "log": {
+      "right": [
+        [0, 0]
+      ]
+    }
+  }
+}

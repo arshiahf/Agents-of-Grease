@@ -6,6 +6,7 @@ import Items
 import Projectile
 import platform
 import os
+import json
 
 
 class Application:
@@ -54,12 +55,12 @@ class Application:
 
         return None
 
-    def set_map(self, map_file):
+    def set_map(self, map_folder: str, map_file: str):
 
         g = self.global_variable
         g["map"] = {}
         map = g["map"]
-        map["tilemap"] = tilemap.Tilemap(map_file)
+        map["tilemap"] = tilemap.Tilemap(map_folder + map_file)
         map["dimensions"] = map["tilemap"].get_dimensions()
         map["image"] = map["tilemap"].draw_map()
         map["location"] = (0, 0)
@@ -96,6 +97,27 @@ class Application:
     def make_platform(self, x: float, y: float, plat_sprite: sprite.Sprite):
         plat = platform.Platform(x, y, sprite=plat_sprite)
         self.global_variable["objects"]["platforms"].append(plat)
+
+    def setup_objects(self, folder_name: str, filename: str):
+
+        try:
+            temp_file = open(folder_name + filename, "r")
+        except FileNotFoundError:
+            print("File does not exist")
+            return None
+
+        g = self.global_variable
+        objects_spots = json.load(temp_file)
+        temp_file.close()
+
+        for object_type in objects_spots:
+            if object_type == "platform":
+                for plat in objects_spots[object_type]:
+                    for location in objects_spots[object_type][plat]:
+                        self.make_platform(
+                            location[0], location[1], g["sprites"]["manager"][plat])
+
+        return None
 
     def get_input(self):
 
@@ -147,6 +169,7 @@ class Application:
         g = self.global_variable
 
         g["screen"]["window"].fill(g["screen"]["fill_color"])
+        g["screen"]["window"].blit(g["map"]["image"], g["map"]["location"])
 
         for plat in range(len(g["objects"]["platforms"])):
             g["objects"]["platforms"][plat].update(
@@ -188,10 +211,6 @@ class Application:
 
         self.make_player(g["screen"]["center"][0], g["screen"]["center"]
                          [1] - 75, "standGun", g["sprites"]["manager"]["hotdog"])
-        self.make_platform(g["screen"]["center"][0], g["screen"]["center"]
-                           [1] + 75, g["sprites"]["manager"]["log_big"])
-        self.make_platform(g["screen"]["center"][0], g["screen"]
-                           ["center"][1] + 25, g["sprites"]["manager"]["log_big"])
 
         while not g["done"]:
 
