@@ -29,10 +29,6 @@ class Application:
         g["time"]["clock"] = pygame.time.Clock()
         g["time"]["delta_time"] = g["time"]["clock"].tick()
 
-        g["objects"] = {}
-        g["objects"]["platforms"] = []
-        g["objects"]["enemies"] = []
-
         g["error"] = {}
         g["error"]["keys"] = {}
         g["error"]["keys"]["a"] = False
@@ -112,6 +108,11 @@ class Application:
             return None
 
         g = self.global_variable
+
+        g["objects"] = {}
+        g["objects"]["platforms"] = []
+        g["objects"]["enemies"] = []
+
         objects_spots = json.load(temp_file)
         temp_file.close()
 
