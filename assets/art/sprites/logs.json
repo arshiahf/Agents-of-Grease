@@ -3,6 +3,7 @@
     "log_big.png"
   ],
   "frame_dimensions": [100, 15],
+  "is_static": true,
   "animations":{
     "log": {
       "right": [

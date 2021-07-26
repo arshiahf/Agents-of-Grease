@@ -14,4 +14,4 @@ class Platform(generic_object.Generic_Object):
     def update(self, delta_time: float, map: pygame.Surface):
         g = self.global_variable
 
-        self.animate(g["animation"]["default_action"], map, 0)
+        self.animate(g["animation"]["default_action"], map, 0, True)

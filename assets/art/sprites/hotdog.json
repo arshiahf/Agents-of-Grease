@@ -3,6 +3,7 @@
     "hotdog.png"
   ],
   "frame_dimensions": [62, 43],
+  "is_static": false,
   "animations": {
     "standNoGun": {
       "right": [

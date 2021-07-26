@@ -26,17 +26,17 @@ class Sprite_Manager:
         for image in current_sheet["images"]:
             sprite_name = image[:image.rfind(".")]
             glob["sprites"][sprite_name] = self.extract_sprite(
-                path, image, current_sheet["frame_dimensions"], current_sheet["animations"])
+                path, image, current_sheet["frame_dimensions"], current_sheet["animations"], current_sheet["is_static"])
 
         return None
 
     # Returns a sprite from a file reference
-    def extract_sprite(self, path: str, image_filename: str, dimensions: list, animations: dict) -> "Sprite":
+    def extract_sprite(self, path: str, image_filename: str, dimensions: list, animations: dict, static: bool = False) -> "Sprite":
 
         sprite_image = pygame.image.load(path + image_filename).convert_alpha()
         frame_dimensions = (dimensions[0], dimensions[1])
         for key in animations.keys():
-            if len(animations[key]) == 1:
+            if len(animations[key]) == 1 and not static:
                 square_dimension = max(dimensions[0], dimensions[1])
                 frame_dimensions = (square_dimension, square_dimension)
         return Sprite(sprite_image, frame_dimensions, animations)
@@ -88,7 +88,7 @@ class Sprite:
         return animations
 
     # Returns the frame number, the frame location, and the sprite sheet used
-    def call_frame(self, animation: str, direction: float, frame: int) -> (int, pygame.rect.Rect, pygame.Surface):
+    def call_frame(self, animation: str, direction: float, frame: int, static: bool = False) -> (int, pygame.rect.Rect, pygame.Surface):
 
         glob = self.global_variable
         sheet = glob["animations"]
@@ -200,10 +200,11 @@ class Sprite:
                     if direction < -math.pi / 2:
                         direction += 2 * math.pi
                     current_frame = sheet[animation][direction_name][frame]
-                    spritesheet = spritesheet.subsurface(
-                        pygame.rect.Rect(current_frame, glob["framesize"])).copy()
-                    spritesheet = pygame.transform.rotate(
-                        spritesheet, math.degrees(direction - math.pi * 1 / 2))
+                    if not static:
+                        spritesheet = spritesheet.subsurface(
+                            pygame.rect.Rect(current_frame, glob["framesize"])).copy()
+                        spritesheet = pygame.transform.rotate(
+                            spritesheet, math.degrees(direction - math.pi * 1 / 2))
                 elif "towards" in sheet[animation]:
                     if frame >= len(sheet[animation]["towards"]) - 1:
                         frame = 0
@@ -212,20 +213,22 @@ class Sprite:
                     if direction < math.pi / 2:
                         direction += 2 * math.pi
                     current_frame = sheet[animation][direction_name][frame]
-                    spritesheet = spritesheet.subsurface(
-                        pygame.rect.Rect(current_frame, glob["framesize"])).copy()
-                    spritesheet = pygame.transform.rotate(
-                        spritesheet, math.degrees(direction - math.pi * 3 / 2))
+                    if not static:
+                        spritesheet = spritesheet.subsurface(
+                            pygame.rect.Rect(current_frame, glob["framesize"])).copy()
+                        spritesheet = pygame.transform.rotate(
+                            spritesheet, math.degrees(direction - math.pi * 3 / 2))
                 elif "right" in sheet[animation]:
                     if frame >= len(sheet[animation]["right"]) - 1:
                         frame = 0
                     else:
                         frame += 1
                     current_frame = sheet[animation][direction_name][frame]
-                    spritesheet = spritesheet.subsurface(
-                        pygame.rect.Rect(current_frame, glob["framesize"])).copy()
-                    spritesheet = pygame.transform.rotate(
-                        spritesheet, math.degrees(direction))
+                    if not static:
+                        spritesheet = spritesheet.subsurface(
+                            pygame.rect.Rect(current_frame, glob["framesize"])).copy()
+                        spritesheet = pygame.transform.rotate(
+                            spritesheet, math.degrees(direction))
                 elif "left" in sheet[animation]:
                     if frame >= len(sheet[animation]["left"]) - 1:
                         frame = 0
@@ -234,10 +237,11 @@ class Sprite:
                     if direction < 0:
                         direction += 2 * math.pi
                     current_frame = sheet[animation][direction_name][frame]
-                    spritesheet = spritesheet.subsurface(
-                        pygame.rect.Rect(current_frame, glob["framesize"])).copy()
-                    spritesheet = pygame.transform.rotate(
-                        spritesheet, math.degrees(direction - math.pi))
+                    if not static:
+                        spritesheet = spritesheet.subsurface(
+                            pygame.rect.Rect(current_frame, glob["framesize"])).copy()
+                        spritesheet = pygame.transform.rotate(
+                            spritesheet, math.degrees(direction - math.pi))
                 return_animation = pygame.rect.Rect((0, 0), glob["framesize"])
 
         return frame, return_animation, spritesheet

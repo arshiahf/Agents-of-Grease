@@ -9,3 +9,6 @@ Finished fixing Atom IDE issue, restarting collision checking project.
 
 9:40 p.m.
 Partial platform collision complete, jumping while on platform still incomplete
+
+7/25/2021 Start 8:00 p.m.
+1st goal: Fix physics and platform sprite interaction
