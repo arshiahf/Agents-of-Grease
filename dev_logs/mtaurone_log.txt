@@ -15,3 +15,7 @@ Partial platform collision complete, jumping while on platform still incomplete
 
 8:45 p.m.
 Finished making platform sprite interaction work correctly, still working on physics.
+
+9:30 p.m.
+Got jumping off of platforms working, should work for both player and enemies.
+Passthrough from below should also work, will test.
