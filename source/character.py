@@ -31,9 +31,9 @@ class Character(generic_object.Generic_Object):
     def collide(self, other_object: generic_object.Generic_Object) -> bool:
         g = self.global_variable
         self_min_width = self.pos.x
-        self_plus_width = self.pos.x + self.spr.width / 2
+        self_plus_width = self.pos.x + self.spr.width * 3 / 4
         other_min_width = other_object.pos.x
-        other_plus_width = other_object.pos.x + other_object.spr.width / 2
+        other_plus_width = other_object.pos.x + other_object.spr.width * 3 / 4
         self_min_height = self.pos.y - self.spr.height / 2
         self_plus_height = self.pos.y + self.spr.height / 2
         other_min_height = other_object.pos.y - other_object.spr.height

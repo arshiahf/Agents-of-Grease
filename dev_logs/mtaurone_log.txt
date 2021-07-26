@@ -30,3 +30,6 @@ Started setting up map and objects, need to update tilemap.py to allow for non-t
 2:45 a.m.
 Finished implementing object and map setup.
 Discovered need to work on collision size of smaller platforms
+
+9:00 a.m.
+Started working on fixing the log collision detection. Presently logs too wide.
