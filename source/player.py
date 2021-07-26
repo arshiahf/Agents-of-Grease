@@ -47,7 +47,7 @@ class Player(character.Character):
         g["movement"]["vector"].x += g["movement"]["vector_x_adjust"]
         g["movement"]["vector"].y += g["movement"]["vector_y_adjust"]
         g["movement"]["vector_y_adjust"] += g["movement"]["gravity"]
-        if g["movement"]["gravity"] == 0.0:
+        if g["movement"]["gravity"] == 0.0 and g["movement"]["vector_y_adjust"] >= 0:
             g["movement"]["vector_y_adjust"] = 0.0
 
         return g["alive"]
