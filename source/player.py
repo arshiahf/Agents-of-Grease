@@ -28,7 +28,7 @@ class Player(character.Character):
             if g["movement"]["vector_y_adjust"] != 0 and g["animation"]["current_action"] != "hurt":
                 g["animation"]["current_action"] = "jumpGun"
             else:
-                g["animation"]["current_action"] = "walkNoGun"
+                g["animation"]["current_action"] = "walkGunNoShoot"
             g["animation"]["current_face"] = self.direction(
                 g["movement"]["vector"])
 

@@ -33,3 +33,6 @@ Discovered need to work on collision size of smaller platforms
 
 9:00 a.m.
 Started working on fixing the log collision detection. Presently logs too wide.
+
+9:25 a.m.
+Logs tuned to be better, starting on introducing hotdog walking gun sprite
