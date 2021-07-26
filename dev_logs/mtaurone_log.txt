@@ -12,3 +12,6 @@ Partial platform collision complete, jumping while on platform still incomplete
 
 7/25/2021 Start 8:00 p.m.
 1st goal: Fix physics and platform sprite interaction
+
+8:45 p.m.
+Finished making platform sprite interaction work correctly, still working on physics.
