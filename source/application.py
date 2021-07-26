@@ -33,6 +33,11 @@ class Application:
         g["objects"]["platforms"] = []
         g["objects"]["enemies"] = []
 
+        g["error"] = {}
+        g["error"]["keys"] = {}
+        g["error"]["keys"]["a"] = False
+        g["error"]["keys"]["d"] = False
+
         g["done"] = False
 
         pygame.init()
@@ -137,16 +142,20 @@ class Application:
                 if event.key == pygame.K_SPACE:
                     if g["player"].get_animation() != "jump" and g["player"].get_animation() != "jumpGun":
                         g["player"].move(y_adjust=-2.5)
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_a and not g["error"]["keys"]["a"]:
                     g["player"].move(x_adjust=-2.5)
-                if event.key == pygame.K_d:
+                    g["error"]["keys"]["a"] = True
+                if event.key == pygame.K_d and not g["error"]["keys"]["d"]:
                     g["player"].move(x_adjust=2.5)
+                    g["error"]["keys"]["d"] = True
 
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_a and g["error"]["keys"]["a"]:
                     g["player"].move(x_adjust=2.5)
-                if event.key == pygame.K_d:
+                    g["error"]["keys"]["a"] = False
+                if event.key == pygame.K_d and g["error"]["keys"]["d"]:
                     g["player"].move(x_adjust=-2.5)
+                    g["error"]["keys"]["d"] = False
 
         # ####7/22/2021 New Contet#######
             if event.type == pygame.MOUSEBUTTONDOWN:
