@@ -7,6 +7,7 @@ import Projectile
 import platform
 import os
 import json
+import sys
 
 
 class Application:
@@ -127,11 +128,13 @@ class Application:
         all_mouse = pygame.mouse.get_pressed()
 
         for event in all_events:
+
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and all_keys[pygame.K_ESCAPE]:
                 g["done"] = True
+                break
 
             if event.type == pygame.KEYDOWN:
-                if all_keys[pygame.K_SPACE]:
+                if event.key == pygame.K_SPACE:
                     if g["player"].get_animation() != "jump" and g["player"].get_animation() != "jumpGun":
                         g["player"].move(y_adjust=-2.5)
                 if event.key == pygame.K_a:
@@ -148,10 +151,12 @@ class Application:
         # ####7/22/2021 New Contet#######
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if all_mouse[0]:
-                    Projectile.Projectitle.shoot(g["projectile"], g["spawn"], g["postiton"], g["speed"])
+                    Projectile.Projectitle.shoot(
+                        g["projectile"], g["spawn"], g["postiton"], g["speed"])
 
                 if all_mouse[1]:
-                    Projectile.Projectitle.shoot(g["M_proj"], g["spawn"], g["postiton"], g["speed"])
+                    Projectile.Projectitle.shoot(
+                        g["M_proj"], g["spawn"], g["postiton"], g["speed"])
 
             # if Items.Rocket.pickle_jar != True:
             #     if all_mouse[0] or [1]:
@@ -216,5 +221,7 @@ class Application:
             continue
 
         pygame.quit()
+
+        sys.exit()
 
         return None
