@@ -19,3 +19,6 @@ Finished making platform sprite interaction work correctly, still working on phy
 9:30 p.m.
 Got jumping off of platforms working, should work for both player and enemies.
 Passthrough from below should also work, will test.
+
+9:35 p.m.
+Confirmed passthrough from below works with dynamic to static bodies.

@@ -190,6 +190,8 @@ class Application:
                          [1] - 75, "standGun", g["sprites"]["manager"]["hotdog"])
         self.make_platform(g["screen"]["center"][0], g["screen"]["center"]
                            [1] + 75, g["sprites"]["manager"]["log_big"])
+        self.make_platform(g["screen"]["center"][0], g["screen"]
+                           ["center"][1] + 25, g["sprites"]["manager"]["log_big"])
 
         while not g["done"]:
 
