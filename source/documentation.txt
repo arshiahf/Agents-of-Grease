@@ -236,3 +236,33 @@ All items from Generic_Object inherited.
     Creates collision physics responses between the character and other objects
     of differing physics types
 --------------------------------------------------------------------------------
+
+
+player.py
+--------------------------------------------------------------------------------
+Class to create/hold all data for the player itself
+
+Inheritance
+-------------------------------------
+generic_object.Generic_Object
+→character.Character
+
+self.global_variable subitems
+-------------------------------------
+All items from Generic_Object and Character inherited.
+"offense" -- Holds information related to the player's offensive capabilities
+  "ketchup_mustard_ammo_max" -- Max player ammo for main weapons
+  "ketchup_mustard_ammo" -- Current player ammo for main weapons
+
+Functions
+-------------------------------------
+update
+  Animates player according to direction moving and if falling, applies gravity,
+  and returns the players alive/dead status
+
+get_animation
+  Returns player's "current_action" animation status
+
+jumping
+  Returns boolean of if the player is jumping or not
+--------------------------------------------------------------------------------
