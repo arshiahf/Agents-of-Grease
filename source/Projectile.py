@@ -45,11 +45,11 @@ class Projectitle(Items.Items):
 
     # New Parts
     def shoot(self, cur_x, cur_y, hit, speed):
-        Projectitle.__init__ ={}
 
         g = self.global_variable
+
         if player.Player(cur_x, cur_y, "shoot") == "WalkShootFar":
-            g["K_proj"] = (cur_x, cur_y) * speed
+            g["K_proj"] = (g["sprites"], g["movement"], g["speed"]) * g["delta_time"]
             g["M_proj"] = (cur_x, cur_y) * speed
             g["R_proj"] = (cur_x, cur_y) * speed
 
