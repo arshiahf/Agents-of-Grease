@@ -1,0 +1,122 @@
+Documentation will be separated by file, then by function and relevant variables.
+
+Some core sensibilities in my code
+--------------------------------------------------------------------------------
+I use the self.global_variable to make a single, easy-to-remember variable to
+pass across the life of an object. It offers the functionality of keeping track
+of all the normal self variables but in one package that you can just pull in
+and reference in each function with "g = self.global_variable" to make a
+shorthand reference to it.
+I will begin each class that uses self.global_variable with a list of what it
+holds in that particular class, for easy reference. If you add more to it when
+you find yourself adjusting the class, please update this document.
+
+I use a lot of class inheritance. A lot. I've often found the best way to make
+a program is to abstract out as much as you can to a generic parent and just
+give particularly specific rules to the furthest down children, like the
+self.update() function, which will generally be unique to each final descendent.
+If you're going to make something that seems like it could use anything from an
+abstract parent I've made, please do, just record in here what direct parent it
+has and the hierarchy will build itself.
+
+I mostly use snake_case rather than camelCase when naming variables and files.
+I just find it makes it easier to convey information about a variable when you
+put its most salient identifying information in its name and separate it like
+spaces, which is the convention of snake_case naming. camelCase naming is used
+in many languages and is useful, but I just prefer snake_case, especially in
+IDEs with auto-complete.
+--------------------------------------------------------------------------------
+
+
+main.py
+--------------------------------------------------------------------------------
+First battery of variables are all generic file paths or specific files.
+The rest of the stuff below it is initializing all the different file
+related imports and then running the program.
+--------------------------------------------------------------------------------
+
+
+application.py
+--------------------------------------------------------------------------------
+Application class, used to contain the highest level, program controlling
+components.
+
+self.global_variable subitems
+-------------------------------------
+  "screen" -- Holds everything relating to the game window
+    "dimensions" -- Dimensions of the window as a tuple
+    "center" -- Center coordinates of the window
+    "fill_color" -- Neutral fill color of the window
+    "window" -- The pygame.display object itself
+  "time" -- Holds all time related information for the game
+    "clock" -- The pygame.Clock used to keep the ticks going
+    "delta_time" -- The moment-to-moment time difference
+  "objects" -- Holds all non-player objects, mostly used in collision checking
+    "enemies" -- All enemy objects
+    "platforms" -- All platform objects
+  "error" -- Holds all error-checking data that needs to be retained
+    "keys" -- Key related error-checking
+      "a" and "d" -- Error data for the a/d movement sticking error
+  "done" -- Boolean about whether or not the game has finished
+  "sounds" -- Created in pull_sounds, holds all sound objects for the game
+  "sprites" -- Created in pull_sprites, holds all sprite objects for the game
+    "manager" -- Holds the sprite manager, which contains all sprites for use
+  "map" -- Creatd in set_map, holds the game's map variables
+    "tilemap" -- Contains the raw JSON/XML data from the actual tilemap file
+    "dimensions" -- Holds the dimensions from the tilemap as a tuple
+    "image" -- Holds the resulting image from unpacking the tilemap
+    "location" -- The map's current absolute location as a tuple, usually (0, 0)
+  "player" -- Holds the current instance of the game's player object
+
+Functions
+-------------------------------------
+__init__
+  Initialization function, generates self.global_variable and starts pygame
+
+pull_sounds
+  Makes the "sounds" subvariable
+  Initialization function, uses folder name passed to import all sounds from
+  listed directory
+
+pull_sprites
+  Makes the "sprites" subvariable
+  Initialization function, uses folder name passed to import all sprites from
+  listed directory
+
+set_map
+  Makes the "map" subvariable
+  Initialization function, uses folder name and file name passed to import a
+  specific map file, then uses the folder to access all of the maps relations
+
+make_player
+  Makes the "player" subvariable
+  Creates the most recent player instance, may be used again to override old
+  instance, if necessary.
+
+make_items
+  ### For Paige to fill in ###
+
+make_projectile
+  ### For Paige to fill in ###
+
+make_platform
+  Creates a single platform instance and puts it into "objects"->"platforms"
+
+setup_objects
+  Makes the "objects" subvariable
+  Initialization funnction, uses passed file name and path to place all objects
+
+get_input
+  Runs in update each cycle to check for any input from player of any kind and
+  parses it
+
+draw
+  Draws all objects, players, and the map each cycle
+
+update
+  Gets the current tick, calls draw and get_input, and performs various
+  maintaining functions to keep the program running
+
+run
+  Makes the player, gets the first tick, runs the game, then shuts it all down
+--------------------------------------------------------------------------------

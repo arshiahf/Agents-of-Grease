@@ -36,3 +36,12 @@ Started working on fixing the log collision detection. Presently logs too wide.
 
 9:25 a.m.
 Logs tuned to be better, starting on introducing hotdog walking gun sprite
+
+10:15 a.m.
+Finished introducing hotdog walking sprite, working on walking bug
+
+12:45 p.m.
+Starting documentation on code for groupmates
+
+5:50 p.m.
+First update on documentation completed
