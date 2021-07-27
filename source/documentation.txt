@@ -202,7 +202,37 @@ update
   Animates the platform
 --------------------------------------------------------------------------------
 
+
 character.py
 --------------------------------------------------------------------------------
+Abstract class for all player-like objects, like enemies and the player itself
 
+Inheritance
+-------------------------------------
+generic_object.Generic_Object
+
+self.global_variable subitems
+-------------------------------------
+All items from Generic_Object inherited.
+"animation" -- Holds all variabled directly related to animation
+  "current_action" -- The presently executing animation of the character
+  "timer_base" -- The core value for the animation timer
+  "timer" -- The current distance of the animation to changing frame
+  "current_face" -- The current direction the character is facing
+"movement" -- Inherited from Generic_Object, holds movement values
+  "base_speed" -- The baseline speed for a character
+  "vector" -- The present vector of movement for the character
+  "vector_y_adjust" -- Changes "vector" to create vertical movement
+  "vector_x_adjust" -- Changes "vector" to create horizontal movement
+  "jump_strength" -- How much of vector_y_adjust to use when jumping
+
+  Functions
+  -------------------------------------
+  move
+    Implements "vector_x_adjust" and "vector_y_adjust" to change "vector" and
+    cause the character to move
+
+  collide
+    Creates collision physics responses between the character and other objects
+    of differing physics types
 --------------------------------------------------------------------------------
