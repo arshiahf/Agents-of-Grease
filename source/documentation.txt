@@ -174,8 +174,35 @@ travel
 
 animate
   Takes the desired animation, the surface to be blitted on, the direction the
-  animation will face, and whether or not the animation will ever change, a.k.a.
+  animation will face, and whether or not the animation will ever rotate, a.k.a.
   if it is a static animation, as arguments. Searches the object's sprite for
   the desired animation and blits it to the given surface if it is valid. The
   Sprite class will throw an error if the animation is invalid
+--------------------------------------------------------------------------------
+
+
+platform.py
+--------------------------------------------------------------------------------
+Class for platform objects which defaults to static physics body and static
+animation type. Adds a default action unique to itself
+
+Inheritance
+-------------------------------------
+generic_object.Generic_Object
+
+self.global_variable subitems
+-------------------------------------
+All items from Generic_Object inherited.
+"animation" -- Holds all variabled directly related to animation
+  "default_action" -- Gives this object a default action to animate
+
+Functions
+-------------------------------------
+update
+  Animates the platform
+--------------------------------------------------------------------------------
+
+character.py
+--------------------------------------------------------------------------------
+
 --------------------------------------------------------------------------------
