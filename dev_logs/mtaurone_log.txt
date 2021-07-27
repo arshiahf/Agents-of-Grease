@@ -54,3 +54,10 @@ Finished multiple documentation sections
 
 12:06 p.m.
 Finished current documentation
+
+7:00 p.m.
+Started working on platform collision, gravity, and player jump control
+
+7:30 p.m.
+Platforms now exact to player feet, jump control stops on space release, and
+gravity feels more natural
