@@ -162,6 +162,9 @@ class Application:
                     g["error"]["keys"]["d"] = True
 
             if event.type == pygame.KEYUP:
+                if event.key == pygame.K_SPACE:
+                    if g["player"].jumping():
+                        g["player"].global_variable["movement"]["vector_y_adjust"] = 0.0
                 if event.key == pygame.K_a and g["error"]["keys"]["a"]:
                     g["player"].move(x_adjust=2.5)
                     g["error"]["keys"]["a"] = False
@@ -177,7 +180,7 @@ class Application:
 
                 if all_mouse[1]:
                     Projectile.Projectitle.shoot(
-                        g["M_proj"], g["spawn"], g["cur_x"], g["cur_y"] , g["speed"])
+                        g["M_proj"], g["spawn"], g["cur_x"], g["cur_y"], g["speed"])
 
             # if Items.Rocket.pickle_jar != True:
             #     if all_mouse[0] or [1]:

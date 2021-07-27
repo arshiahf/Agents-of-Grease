@@ -18,7 +18,7 @@ class Generic_Object:
 
         g["movement"]["physics_type"] = physics_type
         if physics_type == "dynamic":
-            g["movement"]["gravity_base"] = 0.0025
+            g["movement"]["gravity_base"] = 0.004
         elif physics_type == "static" or physics_type == "kinematic":
             g["movement"]["gravity_base"] = 0.0
         g["movement"]["gravity"] = g["movement"]["gravity_base"]
