@@ -38,6 +38,16 @@ class Application:
         g["error"]["keys"]["a"] = False
         g["error"]["keys"]["d"] = False
 
+        g["item"] = {}
+        g["spawn"] = []
+        g["postiton"] = []
+        g["speed"] = []
+
+        g["projectile"] = {}
+        g["K_proj"] = []
+        g["M_proj"] = []
+        g["R_proj"] = []
+
         g["done"] = False
 
         pygame.init()
