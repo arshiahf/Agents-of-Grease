@@ -44,14 +44,14 @@ class Projectitle(Items.Items):
         return self.global_variable["damage"]
 
     # New Parts
-    def shoot(self, position, hit, speed):
+    def shoot(self, cur_x, cur_y, hit, speed):
         Projectitle.__init__ ={}
 
         g = self.global_variable
-
-        g["K_proj"] = position * speed
-        g["M_proj"] = position * speed
-        g["R_proj"] = position * speed
+        if player.Player(cur_x, cur_y, "shoot") == "WalkShootFar":
+            g["K_proj"] = (cur_x, cur_y) * speed
+            g["M_proj"] = (cur_x, cur_y) * speed
+            g["R_proj"] = (cur_x, cur_y) * speed
 
         if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
             g["enemy"]["sprite"] = "defeat"

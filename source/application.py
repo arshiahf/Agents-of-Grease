@@ -36,7 +36,8 @@ class Application:
 
         g["item"] = {}
         g["spawn"] = []
-        g["postiton"] = []
+        g["cur_x"] = []
+        g["cur_y"] = []
         g["speed"] = []
 
         g["projectile"] = {}
@@ -172,11 +173,11 @@ class Application:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if all_mouse[0]:
                     Projectile.Projectitle.shoot(
-                        g["projectile"], g["spawn"], g["postiton"], g["speed"])
+                        g["projectile"], g["spawn"], g["cur_x"], g["cur_y"], g["speed"])
 
                 if all_mouse[1]:
                     Projectile.Projectitle.shoot(
-                        g["M_proj"], g["spawn"], g["postiton"], g["speed"])
+                        g["M_proj"], g["spawn"], g["cur_x"], g["cur_y"] , g["speed"])
 
             # if Items.Rocket.pickle_jar != True:
             #     if all_mouse[0] or [1]:
