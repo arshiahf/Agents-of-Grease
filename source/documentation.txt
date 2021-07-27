@@ -120,3 +120,62 @@ update
 run
   Makes the player, gets the first tick, runs the game, then shuts it all down
 --------------------------------------------------------------------------------
+
+
+generic_object.py
+--------------------------------------------------------------------------------
+Abstract class meant for most objects to inherit from.
+
+self.global_variable subitems
+-------------------------------------
+"position" -- Holds the object's current position
+"movement" -- Holds all variables related to changing the object's position
+  "speed" -- The objects current rate of changing its position
+  "physics_type" -- How the object interacts with gravity and other physics
+                    objects. Options are dynamic, static, and kinematic
+  "gravity_base" -- The object's core gravity value for when it's not on a
+                    static object
+  "gravity" -- The object's current gravity, mostly changes between base and 0
+"sprite" -- Holds the current Sprite object used to represent the object
+"frame" -- The current frame the sprite is on. Start's at -1 because update
+            methods generally start by incrementing frame
+
+Functions
+-------------------------------------
+pos
+  Inherent property that is used to return and adjust the object's position
+
+spr
+  Inherent property that is used to return the object's sprite
+
+phys_type
+  Inherent property that is used to return the object's physics type
+
+has_grav
+  Returns a boolean value expressing whether or not the object is currently
+  affected by its base gravity value
+
+distance
+  Takes another object's position as an argument, calculates current object's
+  distance to the other object
+
+direction
+  Takes a vector as an argument, usually another object's position. Calculates
+  the direction towards the other vector
+
+speed_vector
+  Takes a vector as an argument, usually another object's position. Returns a
+  unit vector aimed at said vector
+
+travel
+  Takes a vector as an argument, usually another object's position, amd a speed
+  value. Creates a unit vector aimed at said vector and moves the object towards
+  the other vector
+
+animate
+  Takes the desired animation, the surface to be blitted on, the direction the
+  animation will face, and whether or not the animation will ever change, a.k.a.
+  if it is a static animation, as arguments. Searches the object's sprite for
+  the desired animation and blits it to the given surface if it is valid. The
+  Sprite class will throw an error if the animation is invalid
+--------------------------------------------------------------------------------
