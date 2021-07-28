@@ -5,8 +5,9 @@ import vector
 import Items
 import math
 
+
 class Projectitle(Items.Items):
-    def __init__(self, pos_x:float, pos_y:float, origin:vector.Vector2, speed_vector:vector.Vector2, range:float, sprite:dict=None, speed:float=0.0, damage:float=1):
+    def __init__(self, pos_x: float, pos_y: float, origin: vector.Vector2, speed_vector: vector.Vector2, range: float, sprite: dict = None, speed: float = 0.0, damage: float = 1):
         super().__init__(pos_x, pos_y, sprite, speed)
         glob = self.global_variable
         glob["origin"] = origin
@@ -30,7 +31,8 @@ class Projectitle(Items.Items):
             self.animate("fly", map, self.direction(glob["direction"]))
 
         self.travel(glob["direction"], glob["speed"])
-        glob["direction"] += glob["speed"] * self.speed_vector(glob["direction"])
+        glob["direction"] += glob["speed"] * \
+            self.speed_vector(glob["direction"])
 
         if self.distance(glob["origin"]) > glob["range"]:
             glob["alive"] = False
@@ -46,6 +48,7 @@ class Projectitle(Items.Items):
         return self.global_variable["damage"]
 
     # New Parts
+
     # def shoot(self, hit, shot, event, screen):
     #
     #     g = self.global_variable
@@ -59,3 +62,4 @@ class Projectitle(Items.Items):
     #     # if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
     #     #     g["enemy"]["sprite"] = "defeat"
     #     return None
+

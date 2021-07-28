@@ -1,8 +1,9 @@
 import generic_object
 import vector
 
+
 class Items(generic_object.Generic_Object):
-    def __init__(self, pos_x:float, pos_y:float, sprite:dict=None, speed:float=0.0):
+    def __init__(self, pos_x: float, pos_y: float, sprite: dict = None, speed: float = 0.0):
         super().__init__(pos_x, pos_y, sprite, speed)
 
 # New Parts
@@ -23,6 +24,7 @@ class Items(generic_object.Generic_Object):
                 if g["pickup"] != "True":
                     return g["spawn"]
 
+
 class Rocket:
     def __init__(self):
         self.position = {}
@@ -35,7 +37,8 @@ class Rocket:
         g["spawn"] = {}
 
         if Items.__class__(0, 0, ) != None:
-            generic_object.Generic_Object.__init__(g["spawn"], g["position"], g["pickup"])
+            generic_object.Generic_Object.__init__(
+                g["spawn"], g["position"], g["pickup"])
             if Rocket.pickle_jar(self, 0, 0, sprite) != 1:
                 g["pickle_jar"] = g["sprite"]
                 g["frame"] = -1
