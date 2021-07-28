@@ -23,7 +23,6 @@ class Player(character.Character):
         if (g["position"] - g["movement"]["vector"]).is_zero:
             g["movement"]["speed"] = 0
             g["animation"]["current_action"] = "standGun"
-            g["animation"]["current_face"] = 0
         else:
             g["movement"]["speed"] = g["movement"]["base_speed"]
             if g["movement"]["vector_y_adjust"] != 0 and g["animation"]["current_action"] != "hurt":
@@ -32,10 +31,6 @@ class Player(character.Character):
                 g["animation"]["current_action"] = "walkGunNoShoot"
             g["animation"]["current_face"] = self.direction(
                 g["movement"]["vector"])
-# New Stuff
-            shot = random.choice(["walkShootFar", "walkShootNear", "walkShootBoth"])
-            g["animation"]["current_action"] = shot
-# End
 
         if g["animation"]["timer"] > 0:
             g["animation"]["timer"] -= delta_time
@@ -62,3 +57,10 @@ class Player(character.Character):
 
     def jumping(self):
         return self.global_variable["movement"]["vector_y_adjust"] < 0.0
+
+    def shoot(self):
+        g = self.global_variable
+
+        shot = random.choice(
+            ["walkShootFar", "walkShootNear", "walkShootBoth"])
+        g["animation"]["current_action"] = shot
