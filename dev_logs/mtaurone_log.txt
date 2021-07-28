@@ -61,3 +61,6 @@ Started working on platform collision, gravity, and player jump control
 7:30 p.m.
 Platforms now exact to player feet, jump control stops on space release, and
 gravity feels more natural
+
+9:00 p.m.
+Finished adding fallthrough for players on platform, as well as w for jumping
