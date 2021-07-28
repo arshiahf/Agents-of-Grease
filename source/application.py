@@ -226,7 +226,46 @@ class Application:
             else:
                 break
 
+        if g["player"].pos.y + g["player"].spr.width * 3 / 4 >= g["screen"]["dimensions"][1]:
+            g["done"] = True
+
         pygame.event.pump()
+
+        return None
+
+    def game_end(self):
+
+        g = self.global_variable
+        g["time"]["delta_time"] = g["time"]["clock"].tick() / 1000
+        glob = g["player"].global_variable
+        glob["animation"]["current_action"] = "die"
+        glob["frame"] = 0
+        glob["animation"]["timer"] = glob["animation"]["timer_base"]
+        end_timer = 3
+
+        while end_timer > 0:
+            g["screen"]["window"].fill(g["screen"]["fill_color"])
+            g["screen"]["window"].blit(g["map"]["image"], g["map"]["location"])
+            g["time"]["delta_time"] = g["time"]["clock"].tick() / 1000
+            if glob["frame"] < 1:
+                if glob["animation"]["timer"] > 0:
+                    glob["animation"]["timer"] -= g["time"]["delta_time"]
+                    glob["frame"] -= 1
+                    g["player"].animate(glob["animation"]["current_action"],
+                                        g["screen"]["window"], glob["animation"]["current_face"])
+                else:
+                    glob["animation"]["timer"] = glob["animation"]["timer_base"]
+                    g["player"].animate(glob["animation"]["current_action"],
+                                        g["screen"]["window"], glob["animation"]["current_face"])
+            else:
+                glob["animation"]["timer"] -= g["time"]["delta_time"]
+                glob["frame"] -= 1
+                g["player"].animate(glob["animation"]["current_action"],
+                                    g["screen"]["window"], glob["animation"]["current_face"])
+
+            end_timer -= g["time"]["delta_time"]
+            pygame.display.flip()
+            pygame.event.pump()
 
         return None
 
@@ -242,7 +281,7 @@ class Application:
 
             self.update()
 
-            continue
+        self.game_end()
 
         pygame.quit()
 
