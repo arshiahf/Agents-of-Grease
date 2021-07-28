@@ -22,22 +22,17 @@ class Player(character.Character):
 
         if (g["position"] - g["movement"]["vector"]).is_zero:
             g["movement"]["speed"] = 0
-            g["animation"]["current_action"] = "standGun"
+            if g["animation"]["current_action"] != "shoot":
+                g["animation"]["current_action"] = "standGun"
         else:
             g["movement"]["speed"] = g["movement"]["base_speed"]
-            if g["movement"]["vector_y_adjust"] != 0 and g["animation"]["current_action"] != "hurt":
-                g["animation"]["current_action"] = "jumpGun"
-            else:
-                g["animation"]["current_action"] = "walkGunNoShoot"
+            if g["animation"]["current_action"] not in ["walkShootFar", "walkShootNear", "walkShootBoth"]:
+                if g["movement"]["vector_y_adjust"] != 0 and g["animation"]["current_action"] != "hurt":
+                    g["animation"]["current_action"] = "jumpGun"
+                else:
+                    g["animation"]["current_action"] = "walkGunNoShoot"
             g["animation"]["current_face"] = self.direction(
                 g["movement"]["vector"])
-<<<<<<< HEAD
-=======
-# New Stuff 7/28/2021 10:12a.m.
-            shot = random.choice(["walkShootFar", "walkShootNear", "walkShootBoth"])
-            g["animation"]["current_action"] = shot
-# End
->>>>>>> 8c6f96547531391fd962680b412b768eb96b7744
 
         if g["animation"]["timer"] > 0:
             g["animation"]["timer"] -= delta_time
@@ -48,6 +43,8 @@ class Player(character.Character):
             g["animation"]["timer"] = g["animation"]["timer_base"]
             self.animate(g["animation"]["current_action"],
                          map, g["animation"]["current_face"])
+            if g["animation"]["current_action"] in ["shoot", "walkShootFar", "walkShootNear", "walkShootBoth"]:
+                g["animation"]["current_action"] = "standGun"
 
         self.travel(g["movement"]["vector"], g["movement"]["speed"])
         g["movement"]["vector"] = g["position"].copy()
@@ -67,7 +64,10 @@ class Player(character.Character):
 
     def shoot(self):
         g = self.global_variable
-
-        shot = random.choice(
-            ["walkShootFar", "walkShootNear", "walkShootBoth"])
+        shot = "shoot"
+        if not (g["position"] - g["movement"]["vector"]).is_zero:
+            shot = random.choice(
+                ["walkShootFar", "walkShootNear", "walkShootBoth"])
+        if shot == "shoot":
+            g["frame"] = random.randint(0, 2)
         g["animation"]["current_action"] = shot

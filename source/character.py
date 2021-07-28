@@ -28,6 +28,9 @@ class Character(generic_object.Generic_Object):
 
         return None
 
+    def face(self, direction: float):
+        self.global_variable["animation"]["current_face"] = direction
+
     def collide(self, other_object: generic_object.Generic_Object) -> bool:
         g = self.global_variable
         self_min_width = self.pos.x + self.spr.width * 3 / 8

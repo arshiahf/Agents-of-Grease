@@ -8,6 +8,7 @@ import platform
 import os
 import json
 import sys
+import vector
 
 
 class Application:
@@ -179,7 +180,11 @@ class Application:
         # ####7/22/2021 New Contet#######
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if all_mouse[0]:
-                   player.Player
+                    mouse_location = pygame.mouse.get_pos()
+                    mouse_vector = vector.Vector2(
+                        mouse_location[0], mouse_location[1])
+                    g["player"].face(g["player"].direction(mouse_vector))
+                    g["player"].shoot()
 
             if Items.Rocket.pickle_jar != True:
                 if all_mouse[0] or [1]:
