@@ -64,3 +64,9 @@ gravity feels more natural
 
 9:00 p.m.
 Finished adding fallthrough for players on platform, as well as w for jumping
+
+7/28/2021 Start 9:00 a.m.
+Finishing today, come hell or high water
+
+10:00 a.m.
+Hot dog legs lighter implemented
