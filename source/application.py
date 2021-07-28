@@ -175,7 +175,10 @@ class Application:
                     mouse_vector = vector.Vector2(
                         mouse_location[0], mouse_location[1])
                     g["player"].face(g["player"].direction(mouse_vector))
-                    g["player"].shoot()
+
+                    # Not sure what animation name to use here -- "hotdog" was a failed attempt
+                    # (he does not have the "fly" animation that the Projectiles need, though)
+                    g["player"].shoot(g["sprites"]["manager"]["hotdog"])
 
 
             # if Items.Rocket.pickle_jar != True:

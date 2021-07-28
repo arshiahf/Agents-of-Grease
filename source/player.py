@@ -2,6 +2,8 @@ import character
 import pygame
 import math
 import random
+import Projectile
+import vector
 
 
 class Player(character.Character):
@@ -15,6 +17,9 @@ class Player(character.Character):
         g["offense"] = {}
         g["offense"]["ketchup_mustard_ammo_max"] = 100
         g["offense"]["ketchup_mustard_ammo"] = g["offense"]["ketchup_mustard_ammo_max"]
+
+        # Make an empty list of bullets
+        g["bullets"] = []
 
     def update(self, delta_time: float, map: pygame.Surface):
 
@@ -54,6 +59,10 @@ class Player(character.Character):
         if g["movement"]["gravity"] == 0.0 and g["movement"]["vector_y_adjust"] >= 0:
             g["movement"]["vector_y_adjust"] = 0.0
 
+        # Update all bullets
+        for b in g["bullets"]:
+            b.update(delta_time, map)
+
         return g["alive"]
 
     def get_animation(self):
@@ -62,7 +71,7 @@ class Player(character.Character):
     def jumping(self):
         return self.global_variable["movement"]["vector_y_adjust"] < 0.0
 
-    def shoot(self):
+    def shoot(self, projectile_sprite):
         g = self.global_variable
         shot = "shoot"
         if not (g["position"] - g["movement"]["vector"]).is_zero:
@@ -71,3 +80,9 @@ class Player(character.Character):
         if shot == "shoot":
             g["frame"] = random.randint(0, 2)
         g["animation"]["current_action"] = shot
+
+        # Spawn a new bullets
+        bullet_x = g["position"].x
+        bullet_y = g["position"].y
+        bullet_vel = vector.polar_to_vector2(self.global_variable["animation"]["current_face"], 200)
+        g["bullets"].append(Projectile.Projectitle(bullet_x, bullet_y, vector.Vector2(bullet_x, bullet_y), bullet_vel, 300, projectile_sprite))
