@@ -1,3 +1,5 @@
+import random
+
 import pygame
 import vector
 import Items
@@ -44,15 +46,26 @@ class Projectitle(Items.Items):
         return self.global_variable["damage"]
 
     # New Parts
-    def shoot(self, cur_x, cur_y, hit, speed):
+    def shoot(self, hit, shot, event, screen):
 
         g = self.global_variable
 
-        if player.Player(cur_x, cur_y, speed) == shot:
-            g["K_proj"] = (g["sprites"], g["location"], g["objects"]) * g["delta_time"]
-            g["M_proj"] = (g["sprites"], g["location"], g["objects"]) * g["delta_time"]
-            g["R_proj"] = (g["sprites"], g["location"], g["objects"]) * g["delta_time"]
+        g["K_proj"] = []
+        g["M_proj"] = []
+        g["R_proj"] = []
+
+        g["projectiles"] = random.choice([g["K_proj"], g["M_proj"]]) #experimental
+        shot.play()
+        g["projectiles"].append(event.pos[0][-32, 500])
+        for proj in g["projectiles"]:
+             screen.blit(g["screen"], pygame.Rect(g["K_proj"][0], g["M_proj"][1], 0, 0))
+             for b in range(len(g["projectiles"])):
+                 g["projectiles"][b][0] -= 10
+
+                 for proj in g["projectiles"]:
+                    if g["projectiles"][0] < 0:
+                            g["projectiles"].remove(shot)        #end
 
         if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
             g["enemy"]["sprite"] = "defeat"
-        return None
+            return None

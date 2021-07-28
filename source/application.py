@@ -10,7 +10,6 @@ import json
 import sys
 import vector
 
-
 class Application:
 
     def __init__(self, width: int, height: int) -> None:
@@ -185,6 +184,7 @@ class Application:
                         mouse_location[0], mouse_location[1])
                     g["player"].face(g["player"].direction(mouse_vector))
                     g["player"].shoot()
+
 
             if Items.Rocket.pickle_jar != True:
                 if all_mouse[0] or [1]:
