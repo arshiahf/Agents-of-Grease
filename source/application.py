@@ -24,7 +24,6 @@ class Application:
         g["screen"]["fill_color"] = pygame.color.Color((200, 200, 200))
         g["screen"]["window"] = pygame.display.set_mode(
             g["screen"]["dimensions"])
-
         g["time"] = {}
         g["time"]["clock"] = pygame.time.Clock()
         g["time"]["delta_time"] = g["time"]["clock"].tick()
@@ -40,7 +39,7 @@ class Application:
         g["cur_y"] = []
         g["speed"] = []
 
-        g["projectile"] = {}
+        g["shoot"] = {}
         g["K_proj"] = []
         g["M_proj"] = []
         g["R_proj"] = []
@@ -97,11 +96,11 @@ class Application:
 
         return None
 
-    def make_projectile(self, projectile_sprite, speed_vector):
+    def make_projectile(self, projectile_sprite, speed_vector, origin, range):
         g = self.global_variable
 
         g["projectile"] = Projectile.Projectitle(
-            g["screen"]["center"][0], g["screen"]["spawn"][1], projectile_sprite, speed_vector, range=1)
+            g["screen"]["center"][0], origin, projectile_sprite, speed_vector, range)
 
         return None
     #######End Addition#############
@@ -180,12 +179,11 @@ class Application:
         # ####7/22/2021 New Contet#######
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if all_mouse[0]:
-                    Projectile.Projectitle.shoot(
-                        g["K_proj"], g["spawn"], g["cur_x"], g["cur_y"], g["speed"])
-
-                if all_mouse[1]:
-                    Projectile.Projectitle.shoot(
-                        g["M_proj"], g["spawn"], g["cur_x"], g["cur_y"], g["speed"])
+                   player.Player
+        #
+        #         if all_mouse[1]:
+        #             Projectile.Projectitle.shoot(
+        #                 g["M_proj"], g["spawn"], g["cur_x"], g["cur_y"], g["speed"])
 
             # if Items.Rocket.pickle_jar != True:
             #     if all_mouse[0] or [1]:

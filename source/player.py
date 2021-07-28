@@ -1,6 +1,7 @@
 import character
 import pygame
 import math
+import random
 
 
 class Player(character.Character):
@@ -31,6 +32,10 @@ class Player(character.Character):
                 g["animation"]["current_action"] = "walkGunNoShoot"
             g["animation"]["current_face"] = self.direction(
                 g["movement"]["vector"])
+# New Stuff
+            shot = random.choice(["walkShootFar", "walkShootNear", "walkShootBoth"])
+            g["animation"]["current_action"] = shot
+# End
 
         if g["animation"]["timer"] > 0:
             g["animation"]["timer"] -= delta_time

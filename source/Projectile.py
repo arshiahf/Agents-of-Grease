@@ -49,9 +49,10 @@ class Projectitle(Items.Items):
         g = self.global_variable
 
         if player.Player(cur_x, cur_y, "shoot") == "WalkShootFar":
-            g["K_proj"] = (g["sprites"], g["movement"], g["speed"]) * g["delta_time"]
-            g["M_proj"] = (cur_x, cur_y) * speed
-            g["R_proj"] = (cur_x, cur_y) * speed
+            g["K_proj"] = (g["sprites"], g["location"], g["objects"]) * g["delta_time"]
+            g["sprites"] = "shoot"
+            #g["M_proj"] = (cur_x, cur_y) * speed
+            #g["R_proj"] = (cur_x, cur_y) * speed
 
         if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
             g["enemy"]["sprite"] = "defeat"
