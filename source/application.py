@@ -167,7 +167,7 @@ class Application:
                         g["player"].pos = player_pos
 
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE or event.key == pygame.K_w:
                     if g["player"].jumping():
                         g["player"].global_variable["movement"]["vector_y_adjust"] = 0.0
                 if event.key == pygame.K_a and g["error"]["keys"]["a"]:
