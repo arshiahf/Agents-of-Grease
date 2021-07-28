@@ -31,6 +31,13 @@ class Player(character.Character):
                 g["animation"]["current_action"] = "walkGunNoShoot"
             g["animation"]["current_face"] = self.direction(
                 g["movement"]["vector"])
+<<<<<<< HEAD
+=======
+# New Stuff 7/28/2021 10:12a.m.
+            shot = random.choice(["walkShootFar", "walkShootNear", "walkShootBoth"])
+            g["animation"]["current_action"] = shot
+# End
+>>>>>>> 8c6f96547531391fd962680b412b768eb96b7744
 
         if g["animation"]["timer"] > 0:
             g["animation"]["timer"] -= delta_time
