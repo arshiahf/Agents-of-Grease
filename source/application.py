@@ -88,8 +88,11 @@ class Application:
     def make_projectile(self, projectile_sprite, speed_vector, origin, range):
         g = self.global_variable
 
-        g["projectile"] = Projectile.Projectitle(
-            g["screen"]["center"][0], origin, projectile_sprite, speed_vector, range)
+        mouse_location = pygame.mouse.get_pos()
+        mouse_vector = vector.Vector2(
+            mouse_location[0], mouse_location[1])
+        g["player"].face(g["projectile"].direction(mouse_vector))
+        g["projectile"].shoot()
 
         return None
     # ######End Addition#############
@@ -172,7 +175,10 @@ class Application:
                     mouse_vector = vector.Vector2(
                         mouse_location[0], mouse_location[1])
                     g["player"].face(g["player"].direction(mouse_vector))
-                    g["player"].shoot()
+
+                    # Not sure what animation name to use here -- "hotdog" was a failed attempt
+                    # (he does not have the "fly" animation that the Projectiles need, though)
+                    g["player"].shoot(g["sprites"]["manager"]["hotdog"])
 
             # if Items.Rocket.pickle_jar != True:
             #     if all_mouse[1]:
