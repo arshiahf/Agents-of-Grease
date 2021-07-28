@@ -33,17 +33,6 @@ class Application:
         g["error"]["keys"]["a"] = False
         g["error"]["keys"]["d"] = False
 
-        g["item"] = {}
-        g["spawn"] = []
-        g["cur_x"] = []
-        g["cur_y"] = []
-        g["speed"] = []
-
-        g["shoot"] = {}
-        g["K_proj"] = []
-        g["M_proj"] = []
-        g["R_proj"] = []
-
         g["done"] = False
 
         pygame.init()
