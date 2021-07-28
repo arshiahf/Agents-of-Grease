@@ -49,17 +49,28 @@ class Projectitle(Items.Items):
 
     # New Parts
 
-    # def shoot(self, hit, shot, event, screen):
-    #
-    #     g = self.global_variable
-    #
-    #     g["K_proj"] = []
-    #     g["M_proj"] = []
-    #     g["R_proj"] = []
-    #
-    #
-    #
-    #     # if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
-    #     #     g["enemy"]["sprite"] = "defeat"
-    #     return None
+    def draw(self, shot, x_pos, y_pos):
+
+        g = self.global_variable
+        g["K_proj"] = []
+        g["M_proj"] = []
+        g["R_proj"] = []
+
+        if g["player"].shoot() == True:
+            projectile = "projectile"
+            if not (g["position"] - g["movement"]["vector"]).is_zero:
+                shot = random.choice(
+                    ["walkShootFar", "walkShootNear", "walkShootBoth"])
+            if shot == "shoot":
+                g["frame"] = random.randint(0, 2)
+            g["animation"]["current_action"] = shot
+
+    def shoot(self, shot, hit, speed):
+        g = self.global_variable
+        g["K_proj"] =
+
+        # if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
+        #     g["enemy"]["sprite"] = "defeat"
+
+        return None
 
