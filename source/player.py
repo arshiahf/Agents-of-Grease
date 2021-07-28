@@ -32,7 +32,7 @@ class Player(character.Character):
                 g["animation"]["current_action"] = "walkGunNoShoot"
             g["animation"]["current_face"] = self.direction(
                 g["movement"]["vector"])
-# New Stuff
+# New Stuff 7/28/2021 10:12a.m.
             shot = random.choice(["walkShootFar", "walkShootNear", "walkShootBoth"])
             g["animation"]["current_action"] = shot
 # End
