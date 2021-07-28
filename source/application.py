@@ -88,8 +88,11 @@ class Application:
     def make_projectile(self, projectile_sprite, speed_vector, origin, range):
         g = self.global_variable
 
-        g["projectile"] = Projectile.Projectitle(
-            g["screen"]["center"][0], origin, projectile_sprite, speed_vector, range)
+        mouse_location = pygame.mouse.get_pos()
+        mouse_vector = vector.Vector2(
+            mouse_location[0], mouse_location[1])
+        g["player"].face(g["projectile"].direction(mouse_vector))
+        g["projectile"].shoot()
 
         return None
     #######End Addition#############

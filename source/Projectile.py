@@ -3,7 +3,7 @@ import random
 import pygame
 import vector
 import Items
-import player
+import math
 
 class Projectitle(Items.Items):
     def __init__(self, pos_x:float, pos_y:float, origin:vector.Vector2, speed_vector:vector.Vector2, range:float, sprite:dict=None, speed:float=0.0, damage:float=1):
@@ -46,26 +46,16 @@ class Projectitle(Items.Items):
         return self.global_variable["damage"]
 
     # New Parts
-    def shoot(self, hit, shot, event, screen):
-
-        g = self.global_variable
-
-        g["K_proj"] = []
-        g["M_proj"] = []
-        g["R_proj"] = []
-
-        g["projectiles"] = random.choice([g["K_proj"], g["M_proj"]]) #experimental
-        shot.play()
-        g["projectiles"].append(event.pos[0][-32, 500])
-        for proj in g["projectiles"]:
-             screen.blit(g["screen"], pygame.Rect(g["K_proj"][0], g["M_proj"][1], 0, 0))
-             for b in range(len(g["projectiles"])):
-                 g["projectiles"][b][0] -= 10
-
-                 for proj in g["projectiles"]:
-                    if g["projectiles"][0] < 0:
-                            g["projectiles"].remove(shot)        #end
-
-        # if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
-        #     g["enemy"]["sprite"] = "defeat"
-        return None
+    # def shoot(self, hit, shot, event, screen):
+    #
+    #     g = self.global_variable
+    #
+    #     g["K_proj"] = []
+    #     g["M_proj"] = []
+    #     g["R_proj"] = []
+    #
+    #
+    #
+    #     # if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
+    #     #     g["enemy"]["sprite"] = "defeat"
+    #     return None
