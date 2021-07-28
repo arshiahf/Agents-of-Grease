@@ -1,0 +1,14 @@
+{ "columns":6,
+ "image":"Projectile_SpriteSheet1.png",
+ "imageheight":100,
+ "imagewidth":100,
+ "margin":0,
+ "name":"Projectile_SpriteSheet1",
+ "spacing":0,
+ "tilecount":36,
+ "tiledversion":"1.4.2",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":1.4
+}

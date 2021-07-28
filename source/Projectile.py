@@ -68,8 +68,8 @@ class Projectitle(Items.Items):
     def shoot(self, shot, hit, speed):
         g = self.global_variable
 
-        # if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
-        #     g["enemy"]["sprite"] = "defeat"
+        if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
+             g["enemy"]["sprite"] = "defeat"
 
         return None
 
