@@ -151,7 +151,7 @@ class Application:
                 break
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE or event.key == pygame.K_w:
                     if g["player"].get_animation() != "jump" and g["player"].get_animation() != "jumpGun":
                         g["player"].move(y_adjust=-2.5)
                 if event.key == pygame.K_a and not g["error"]["keys"]["a"]:
@@ -160,6 +160,11 @@ class Application:
                 if event.key == pygame.K_d and not g["error"]["keys"]["d"]:
                     g["player"].move(x_adjust=2.5)
                     g["error"]["keys"]["d"] = True
+                if event.key == pygame.K_s:
+                    if g["player"].get_animation() != "jump" and g["player"].get_animation() != "jumpGun":
+                        player_pos = g["player"].pos
+                        player_pos.y += 6
+                        g["player"].pos = player_pos
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
@@ -252,16 +257,23 @@ class Application:
                     glob["animation"]["timer"] -= g["time"]["delta_time"]
                     glob["frame"] -= 1
                     g["player"].animate(glob["animation"]["current_action"],
-                                        g["screen"]["window"], glob["animation"]["current_face"])
+                                        g["screen"]["window"], glob["animation"]
+                                        ["current_face"])
                 else:
                     glob["animation"]["timer"] = glob["animation"]["timer_base"]
                     g["player"].animate(glob["animation"]["current_action"],
-                                        g["screen"]["window"], glob["animation"]["current_face"])
+                                        g["screen"]["window"], glob["animation"]
+                                        ["current_face"])
             else:
                 glob["animation"]["timer"] -= g["time"]["delta_time"]
                 glob["frame"] -= 1
                 g["player"].animate(glob["animation"]["current_action"],
-                                    g["screen"]["window"], glob["animation"]["current_face"])
+                                    g["screen"]["window"], glob["animation"]
+                                    ["current_face"])
+
+            for plat in range(len(g["objects"]["platforms"])):
+                g["objects"]["platforms"][plat].update(
+                    g["time"]["delta_time"], g["screen"]["window"])
 
             end_timer -= g["time"]["delta_time"]
             pygame.display.flip()

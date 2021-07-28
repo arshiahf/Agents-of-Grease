@@ -33,7 +33,7 @@ class Generic_Object:
 
     @pos.setter
     def pos(self, new_vector: vector.Vector2):
-        if not issubclass(new_vector, vector.Vector2):
+        if not issubclass(new_vector.__class__, vector.Vector2):
             raise TypeError("Assignable for position must be a Vector2.")
         else:
             self.global_variable["position"] = new_vector.copy()
