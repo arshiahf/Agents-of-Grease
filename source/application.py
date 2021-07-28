@@ -186,9 +186,9 @@ class Application:
                     g["player"].shoot()
 
 
-            if Items.Rocket.pickle_jar != True:
-                if all_mouse[0] or [1]:
-                    player.Player
+            # if Items.Rocket.pickle_jar != True:
+            #     if all_mouse[1]:
+            #         player.Player
 
         # #####End Addition##############
 

@@ -66,6 +66,6 @@ class Projectitle(Items.Items):
                     if g["projectiles"][0] < 0:
                             g["projectiles"].remove(shot)        #end
 
-        if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
-            g["enemy"]["sprite"] = "defeat"
-            return None
+        # if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
+        #     g["enemy"]["sprite"] = "defeat"
+        return None
