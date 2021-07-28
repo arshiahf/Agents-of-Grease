@@ -7,8 +7,8 @@ import Projectile
 import platform
 import os
 import json
-import sys
 import vector
+
 
 class Application:
 
@@ -77,7 +77,7 @@ class Application:
 
         return None
 
-    ####7/22/2021 New Contet########
+    # ###7/22/2021 New Contet########
     def make_items(self, item_sprite):
         g = self.global_variable
         g["item"] = Items.Items(g["screen"]["spawn"][0],
@@ -92,7 +92,7 @@ class Application:
             g["screen"]["center"][0], origin, projectile_sprite, speed_vector, range)
 
         return None
-    #######End Addition#############
+    # ######End Addition#############
 
     def make_platform(self, x: float, y: float, plat_sprite: sprite.Sprite):
         plat = platform.Platform(x, y, sprite=plat_sprite)
@@ -173,7 +173,6 @@ class Application:
                         mouse_location[0], mouse_location[1])
                     g["player"].face(g["player"].direction(mouse_vector))
                     g["player"].shoot()
-
 
             # if Items.Rocket.pickle_jar != True:
             #     if all_mouse[1]:
@@ -284,7 +283,5 @@ class Application:
         self.game_end()
 
         pygame.quit()
-
-        sys.exit()
 
         return None
