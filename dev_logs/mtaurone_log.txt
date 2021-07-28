@@ -76,3 +76,6 @@ Added sprite management for shooting
 
 11:00 a.m.
 Fixed gun continuity errors
+
+12:00 p.m.
+Finished making enemy and projectile sprite sheets
