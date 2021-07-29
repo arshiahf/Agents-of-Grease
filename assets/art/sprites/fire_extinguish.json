@@ -1,0 +1,30 @@
+{
+  "images": [
+    "fire_extinguish.png"
+  ],
+  "frame_dimensions": [27, 35],
+  "is_static": true,
+  "animations":{
+    "fullBurn": {
+      "right": [
+        [0, 0],
+        [1, 0],
+        [2, 0]
+      ]
+    },
+    "lowBurn": {
+      "right": [
+        [0, 3],
+        [0, 4],
+        [0, 5]
+      ]
+    },
+    "extinguished": {
+      "right": [
+        [0, 6],
+        [0, 7],
+        [0, 8]
+      ]
+    }
+  }
+}

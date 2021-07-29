@@ -2,7 +2,7 @@ import sprite
 import tilemap
 import pygame
 import player
-import platform
+import plat
 import os
 import json
 import vector
@@ -84,8 +84,13 @@ class Application:
         return None
 
     def make_platform(self, x: float, y: float, plat_sprite: sprite.Sprite):
-        plat = platform.Platform(x, y, sprite=plat_sprite)
-        self.global_variable["objects"]["platforms"].append(plat)
+        new_plat = plat.Platform(x, y, sprite=plat_sprite)
+        self.global_variable["objects"]["platforms"].append(new_plat)
+
+    def light_fire(self, x: float, y: float, fire_sprite: sprite.Sprite):
+        fire = plat.Platform(
+            x, y, default_action="fullBurn", sprite=fire_sprite)
+        self.global_variable["fire"] = fire
 
     def setup_objects(self, folder_name: str, filename: str):
 
@@ -126,7 +131,7 @@ class Application:
                 x_pos, y_pos, "smallStand", enemy_sprites, size)
 
         # new_enemy.change_target(g["objects"]["fire"])
-        new_enemy.change_target(g["player"])
+        new_enemy.change_target(g["fire"])
         g["objects"]["enemies"].append(new_enemy)
 
         return None
@@ -208,8 +213,10 @@ class Application:
         g["screen"]["window"].fill(g["screen"]["fill_color"])
         g["screen"]["window"].blit(g["map"]["image"], g["map"]["location"])
 
-        for plat in g["objects"]["platforms"]:
-            plat.update(g["time"]["delta_time"], g["screen"]["window"])
+        g["fire"].update(g["time"]["delta_time"], g["screen"]["window"])
+
+        for platform in g["objects"]["platforms"]:
+            platform.update(g["time"]["delta_time"], g["screen"]["window"])
 
         for enem in g["objects"]["enemies"]:
             if not enem.update(g["time"]["delta_time"], g["screen"]["window"]):
@@ -257,6 +264,14 @@ class Application:
                 if not enemy_object.collide(plat_object):
                     enemy_object.restore_grav()
                 else:
+                    break
+            if enemy_object.collide(g["fire"]):
+                g["objects"]["enemies"].remove(enemy_object)
+                if g["fire"].global_variable["animation"]["default_action"] == "fullBurn":
+                    g["fire"].global_variable["animation"]["default_action"] = "lowBurn"
+                elif g["fire"].global_variable["animation"]["default_action"] == "lowBurn":
+                    g["fire"].global_variable["animation"]["default_action"] = "extinguished"
+                    g["done"] = True
                     break
 
         for enemy_object in g["objects"]["enemies"]:
@@ -308,6 +323,8 @@ class Application:
             g["screen"]["window"].blit(g["map"]["image"], g["map"]["location"])
             g["time"]["delta_time"] = g["time"]["clock"].tick() / 1000
 
+            g["fire"].update(g["time"]["delta_time"], g["screen"]["window"])
+
             for plat in range(len(g["objects"]["platforms"])):
                 g["objects"]["platforms"][plat].update(
                     g["time"]["delta_time"], g["screen"]["window"])
@@ -344,6 +361,10 @@ class Application:
 
         self.make_player(g["screen"]["center"][0], g["screen"]["center"]
                          [1] - 75, "standGun", g["sprites"]["manager"]["hotdog"])
+
+        fire_sprite = g["sprites"]["manager"]["fire_extinguish"]
+        self.light_fire(g["screen"]["dimensions"][0] - fire_sprite.width,
+                        g["screen"]["dimensions"][1] - fire_sprite.height, fire_sprite)
 
         while not g["done"]:
 

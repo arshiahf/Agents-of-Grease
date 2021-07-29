@@ -10,6 +10,8 @@ class Platform(generic_object.Generic_Object):
 
         g["animation"] = {}
         g["animation"]["default_action"] = default_action
+        g["animation"]["timer_base"] = 0.5
+        g["animation"]["timer"] = g["animation"]["timer_base"]
 
         g["collision_box"] = {
             "minus_width": 0,
@@ -20,5 +22,14 @@ class Platform(generic_object.Generic_Object):
 
     def update(self, delta_time: float, map: pygame.Surface):
         g = self.global_variable
+
+        if g["animation"]["timer"] > 0:
+            g["animation"]["timer"] -= delta_time
+            g["frame"] -= 1
+            self.animate(g["animation"]["default_action"],
+                         map, 0)
+        else:
+            g["animation"]["timer"] = g["animation"]["timer_base"]
+            self.animate(g["animation"]["default_action"], map, 0)
 
         self.animate(g["animation"]["default_action"], map, 0, True)
