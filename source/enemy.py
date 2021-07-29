@@ -18,7 +18,7 @@ class Enemy(character.Character):
 
         g["movement"]["jump_strength"] = -1.5
         g["movement"]["free_jump"] = False
-        g["movement"]["gravity_base"] = 0.01
+        g["movement"]["gravity_base"] = 1   # 0.01 was the previous gravity_base
         g["movement"]["gravity"] = g["movement"]["gravity_base"]
 
         g["movement"]["timer_base"] = 0.05
@@ -132,13 +132,13 @@ class Enemy(character.Character):
     def change_target(self, target: generic_object.Generic_Object):
         self.global_variable["target"] = target
 
-    # def restore_grav(self):
-    #     g = self.global_variable
-    #     g["movement"]["gravity"] = g["movement"]["gravity_base"]
-    #     if not g["movement"]["free_jump"] and g["landed"]:
-    #         g["movement"]["vector_y_adjust"] = 0.0
-    #         g["movement"]["vector_y_adjust"] += g["movement"]["jump_strength"]
-    #         g["movement"]["free_jump"] = True
+    def restore_grav(self):
+        g = self.global_variable
+        g["movement"]["gravity"] = g["movement"]["gravity_base"]
+        if not g["movement"]["free_jump"] and g["landed"]:
+            g["movement"]["vector_y_adjust"] = 0.0
+            g["movement"]["vector_y_adjust"] += g["movement"]["jump_strength"]
+            g["movement"]["free_jump"] = True
 
     def hurt(self, projectile_type: str, curr_player: character.Character):
         g = self.global_variable
