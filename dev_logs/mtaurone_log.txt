@@ -98,3 +98,6 @@ Enemies can now establish a target and move towards it
 
 8:40 a.m.
 Finished making the fire and lose condition
+
+8:50 a.m.
+Fixed fire sprite. Final commit.

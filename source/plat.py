@@ -10,7 +10,7 @@ class Platform(generic_object.Generic_Object):
 
         g["animation"] = {}
         g["animation"]["default_action"] = default_action
-        g["animation"]["timer_base"] = 0.5
+        g["animation"]["timer_base"] = 0.25
         g["animation"]["timer"] = g["animation"]["timer_base"]
 
         g["collision_box"] = {
@@ -31,5 +31,3 @@ class Platform(generic_object.Generic_Object):
         else:
             g["animation"]["timer"] = g["animation"]["timer_base"]
             self.animate(g["animation"]["default_action"], map, 0)
-
-        self.animate(g["animation"]["default_action"], map, 0, True)
