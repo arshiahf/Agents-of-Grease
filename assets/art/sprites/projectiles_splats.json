@@ -1,0 +1,29 @@
+{
+  "images": [
+    "projectiles_splats.png"
+  ],
+  "frame_dimensions": [23, 21],
+  "is_static": false,
+  "animations":{
+    "ketchupSplat": {
+      "left": [
+        [0, 0],
+        [1, 0]
+      ],
+      "right": [
+        [0, 1],
+        [1, 1]
+      ]
+    },
+    "mustardSplat": {
+      "left": [
+        [2, 0],
+        [3, 0]
+      ],
+      "right": [
+        [2, 1],
+        [3, 1]
+      ]
+    }
+  }
+}

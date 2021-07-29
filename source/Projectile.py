@@ -1,75 +1,67 @@
-import random
-
 import pygame
+import generic_object
 import vector
-import Items
-import math
 
 
-class Projectitle(Items.Items):
-    def __init__(self, pos_x: float, pos_y: float, origin: vector.Vector2, speed_vector: vector.Vector2, range: float, sprite: dict = None, speed: float = 0.0, damage: float = 1):
-        super().__init__(pos_x, pos_y, sprite, speed)
-        glob = self.global_variable
-        glob["origin"] = origin
-        glob["direction"] = speed_vector
-        glob["range"] = range
-        glob["move_time_base"] = 0.05
-        glob["move_timer"] = 0
-        glob["threat_area"] = glob["sprite"].width
-        glob["damage"] = damage
+class Projectile(generic_object.Generic_Object):
 
-    def update(self, delta_time: float, map: pygame.Surface):
+    def __init__(self, pos_x: float, pos_y: float, direction_vector: vector.Vector2, projectile_type: str, sprite: dict = None, splat_sprite: dict = None, speed: float = 1.25, physics_type: str = "kinematic"):
 
-        glob = self.global_variable
+        super().__init__(pos_x, pos_y, sprite, speed, physics_type)
+        g = self.global_variable
 
-        if glob["move_timer"] > 0:
-            glob["move_timer"] -= delta_time
-            glob["frame"] -= 1
-            self.animate("fly", map, self.direction(glob["direction"]))
+        g["movement"]["direction_vector"] = direction_vector
+        g["splatted"] = False
+        g["dead"] = False
+
+        g["animation"] = {}
+        g["animation"]["timer_base"] = 0.15
+        g["animation"]["timer"] = g["animation"]["timer_base"]
+        g["projectile_type"] = projectile_type
+        if g["projectile_type"] == "ketchup":
+            g["animation"]["current_action"] = "ketchupFly"
+        elif g["projectile_type"] == "mustard":
+            g["animation"]["current_action"] = "mustardFly"
+        g["animation"]["current_face"] = self.direction(direction_vector)
+
+        if splat_sprite is not None:
+            g["splat_sprite"] = splat_sprite
+
+    def update(self, delta_time: float, map: pygame.Surface) -> bool:
+        g = self.global_variable
+
+        if abs(g["position"].x - g["movement"]["direction_vector"].x) <= 2 * g["movement"]["speed"]:
+            if g["movement"]["direction_vector"].x < g["position"].x:
+                g["movement"]["direction_vector"].x -= 2 * g["movement"]["speed"]
+            else:
+                g["movement"]["direction_vector"].x += 2 * g["movement"]["speed"]
+
+        if g["splatted"] and g["frame"] > 0:
+            g["dead"] = True
+
+        if g["animation"]["timer"] > 0:
+            g["animation"]["timer"] -= delta_time
+            g["frame"] -= 1
+            self.animate(g["animation"]["current_action"],
+                         map, g["animation"]["current_face"])
         else:
-            glob["move_timer"] = glob["move_time_base"]
-            self.animate("fly", map, self.direction(glob["direction"]))
+            g["animation"]["timer"] = g["animation"]["timer_base"]
+            self.animate(g["animation"]["current_action"],
+                         map, g["animation"]["current_face"])
 
-        self.travel(glob["direction"], glob["speed"])
-        glob["direction"] += glob["speed"] * \
-            self.speed_vector(glob["direction"])
+        if g["splatted"] and g["sprite"] is not g["splat_sprite"]:
+            g["sprite"] = g["splat_sprite"]
+            if g["projectile_type"] == "ketchup":
+                g["animation"]["current_action"] = "ketchupSplat"
+            elif g["projectile_type"] == "mustard":
+                g["animation"]["current_action"] = "mustardSplat"
+            g["frame"] = 0
 
-        if self.distance(glob["origin"]) > glob["range"]:
-            glob["alive"] = False
+        if not g["splatted"]:
+            self.travel(g["movement"]["direction_vector"],
+                        g["movement"]["speed"])
 
-        return glob["alive"]
+        return g["dead"]
 
-    @property
-    def threat_area(self):
-        return self.global_variable["threat_area"]
-
-    @property
-    def damage(self):
-        return self.global_variable["damage"]
-
-    # New Parts
-
-    def draw(self, shot, x_pos, y_pos):
-
-        g = self.global_variable
-        g["K_proj"] = []
-        g["M_proj"] = []
-        g["R_proj"] = []
-
-        if g["player"].shoot() == True:
-            projectile = "projectile"
-            if not (g["position"] - g["movement"]["vector"]).is_zero:
-                shot = random.choice(
-                    ["walkShootFar", "walkShootNear", "walkShootBoth"])
-            if shot == "shoot":
-                g["frame"] = random.randint(0, 2)
-            g["animation"]["current_action"] = shot
-
-    def shoot(self, shot, hit, speed):
-        g = self.global_variable
-
-        if g["K_proj"] or g["M_proj"] or g["R_proj"] != hit:
-             g["enemy"]["sprite"] = "defeat"
-
-        return None
-
+    def splat(self):
+        self.global_variable["splatted"] = True

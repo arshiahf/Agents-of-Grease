@@ -2,12 +2,12 @@ import sprite
 import tilemap
 import pygame
 import player
-import Items
-import Projectile
 import platform
 import os
 import json
 import vector
+import projectile
+import random
 
 
 class Application:
@@ -32,6 +32,10 @@ class Application:
         g["error"]["keys"] = {}
         g["error"]["keys"]["a"] = False
         g["error"]["keys"]["d"] = False
+
+        g["projectiles"] = {}
+        g["projectiles"]["ketchup"] = []
+        g["projectiles"]["mustard"] = []
 
         g["done"] = False
 
@@ -76,26 +80,6 @@ class Application:
                                     0.15, base_speed=0.15)
 
         return None
-
-    # ###7/22/2021 New Contet########
-    def make_items(self, item_sprite):
-        g = self.global_variable
-        g["item"] = Items.Items(g["screen"]["spawn"][0],
-                                g["screen"]["spawn"][1], item_sprite)
-
-        return None
-
-    def make_projectile(self, projectile_sprite, speed_vector, origin, range):
-        g = self.global_variable
-
-        mouse_location = pygame.mouse.get_pos()
-        mouse_vector = vector.Vector2(
-            mouse_location[0], mouse_location[1])
-        g["player"].face(g["projectile"].direction(mouse_vector))
-        g["projectile"].shoot()
-
-        return None
-    # ######End Addition#############
 
     def make_platform(self, x: float, y: float, plat_sprite: sprite.Sprite):
         plat = platform.Platform(x, y, sprite=plat_sprite)
@@ -168,23 +152,32 @@ class Application:
                     g["player"].move(x_adjust=-2.5)
                     g["error"]["keys"]["d"] = False
 
-        # ####7/22/2021 New Contet#######
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if all_mouse[0]:
                     mouse_location = pygame.mouse.get_pos()
                     mouse_vector = vector.Vector2(
                         mouse_location[0], mouse_location[1])
+                    mouse_vector.x -= g["player"].spr.width * 1 / 2
                     g["player"].face(g["player"].direction(mouse_vector))
-
-                    # Not sure what animation name to use here -- "hotdog" was a failed attempt
-                    # (he does not have the "fly" animation that the Projectiles need, though)
-                    g["player"].shoot(g["sprites"]["manager"]["hotdog"])
-
-            # if Items.Rocket.pickle_jar != True:
-            #     if all_mouse[1]:
-            #         player.Player
-
-        # #####End Addition##############
+                    g["player"].shoot()
+                    player_y = g["player"].pos.y + \
+                        g["player"].spr.height * 1 / 3
+                    if mouse_vector.x <= g["player"].pos.x:
+                        player_x = g["player"].pos.x + \
+                            g["player"].spr.width * 1 / 8
+                        mouse_vector.x = -g["screen"]["dimensions"][0]
+                    else:
+                        player_x = g["player"].pos.x + \
+                            g["player"].spr.width * 7 / 8
+                        mouse_vector.x = 2 * g["screen"]["dimensions"][0]
+                    projectile_type = random.choice(["ketchup", "mustard"])
+                    mouse_vector.y = player_y
+                    new_proj = projectile.Projectile(
+                        player_x, player_y, mouse_vector, projectile_type, sprite=g["sprites"]["manager"]["projectiles"], splat_sprite=g["sprites"]["manager"]["projectiles_splats"])
+                    if projectile_type == "ketchup":
+                        g["projectiles"]["ketchup"].append(new_proj)
+                    elif projectile_type == "mustard":
+                        g["projectiles"]["mustard"].append(new_proj)
 
             return None
 
@@ -198,6 +191,36 @@ class Application:
         for plat in range(len(g["objects"]["platforms"])):
             g["objects"]["platforms"][plat].update(
                 g["time"]["delta_time"], g["screen"]["window"])
+
+        mustard_limit = len(g["projectiles"]["mustard"])
+        mustard = 0
+        if mustard_limit > 0:
+            while mustard < mustard_limit:
+                must = g["projectiles"]["mustard"][mustard]
+                mustard += 1
+                if must.global_variable["dead"]:
+                    g["projectiles"]["mustard"].remove(must)
+                    mustard -= 1
+                    mustard_limit -= 1
+                    continue
+                if must.pos.x <= 0 or must.pos.x + must.spr.width >= g["screen"]["dimensions"][0]:
+                    must.splat()
+                must.update(g["time"]["delta_time"], g["screen"]["window"])
+
+        ketchup_limit = len(g["projectiles"]["ketchup"])
+        ketchup = 0
+        if ketchup_limit > 0:
+            while ketchup < ketchup_limit:
+                ketch = g["projectiles"]["ketchup"][ketchup]
+                ketchup += 1
+                if ketch.global_variable["dead"]:
+                    g["projectiles"]["ketchup"].remove(ketch)
+                    ketchup -= 1
+                    ketchup_limit -= 1
+                    continue
+                if ketch.pos.x <= 10 or ketch.pos.x + ketch.spr.width >= g["screen"]["dimensions"][0] - 10:
+                    ketch.splat()
+                ketch.update(g["time"]["delta_time"], g["screen"]["window"])
 
         g["player"].update(g["time"]["delta_time"], g["screen"]["window"])
 

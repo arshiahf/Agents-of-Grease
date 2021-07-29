@@ -79,3 +79,9 @@ Fixed gun continuity errors
 
 12:00 p.m.
 Finished making enemy and projectile sprite sheets
+
+7:00 p.m.
+Start with projectile and enemy sprite JSON sheets and projectile handling
+
+10:00 p.m.
+Finished with projectile handling and enemy/projectile sprite JSON sheets
