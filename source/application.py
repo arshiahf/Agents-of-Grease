@@ -47,7 +47,9 @@ class Application:
 
         g = self.global_variable
         g["sounds"] = {}
+        Squirt_sound = "..\\assets\\sound\\finished_sounds\\bottle_squirt.mp3"
 
+        pygame.mixer.init()
         return None
 
     def pull_sprites(self, sprites_path):
