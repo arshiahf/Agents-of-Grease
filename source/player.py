@@ -1,21 +1,32 @@
 import character
 import pygame
-import math
 import random
-import vector
+import enemy
+import generic_object
 
 
 class Player(character.Character):
 
-    def __init__(self, pos_x: float, pos_y: float, current_action: str, sprite: dict = None, speed: float = 0.0, current_face: float = 0.0, base_speed: float = 1.0):
+    def __init__(self, pos_x: float, pos_y: float, current_action: str, sprite: dict = None, speed: float = 0.0, current_face: float = 0.0, base_speed: float = 1.0, physics_type: str = "dynamic"):
 
         super().__init__(pos_x, pos_y, current_action,
-                         sprite, speed, current_face, base_speed)
+                         sprite, speed, current_face, base_speed, physics_type)
         g = self.global_variable
 
         g["offense"] = {}
         g["offense"]["ketchup_mustard_ammo_max"] = 100
         g["offense"]["ketchup_mustard_ammo"] = g["offense"]["ketchup_mustard_ammo_max"]
+
+        g["movement"]["momentum"] = 0.0
+        g["movement"]["momentum_base"] = g["movement"]["momentum"]
+        g["movement"]["momentum_vector"] = self.pos
+
+        g["collision_box"] = {
+            "minus_width": self.spr.width * 3 / 8,
+            "plus_width": self.spr.width * 5 / 8,
+            "minus_height": self.spr.height * 1 / 4,
+            "plus_height": self.spr.height
+        }
 
     def update(self, delta_time: float, map: pygame.Surface):
 
@@ -55,6 +66,15 @@ class Player(character.Character):
         if g["movement"]["gravity"] == 0.0 and g["movement"]["vector_y_adjust"] >= 0:
             g["movement"]["vector_y_adjust"] = 0.0
 
+        if g["movement"]["momentum"] != 0:
+            g["movement"]["momentum_vector"] = self.pos
+            g["movement"]["momentum_vector"].x += g["movement"]["momentum"]
+            g["movement"]["momentum"] -= g["movement"]["momentum_base"] * 1 / 10
+            self.travel(g["movement"]["momentum_vector"],
+                        g["movement"]["momentum"])
+            if 0.001 > g["movement"]["momentum"] and -0.001 < g["movement"]["momentum"]:
+                g["movement"]["momentum"] = 0.0
+
         return g["alive"]
 
     def get_animation(self):
@@ -62,6 +82,16 @@ class Player(character.Character):
 
     def jumping(self):
         return self.global_variable["movement"]["vector_y_adjust"] < 0.0
+
+    def hurt(self, knockback: float, other_object: enemy.Enemy):
+        g = self.global_variable
+
+        g["animation"]["current_action"] = "hurt"
+        if self.pos - other_object.pos < 0:
+            g["movement"]["momentum"] = knockback
+        else:
+            g["movement"]["momentum"] = -knockback
+        g["movement"]["momentum_base"] = g["movement"]["momentum"]
 
     def shoot(self):
         g = self.global_variable

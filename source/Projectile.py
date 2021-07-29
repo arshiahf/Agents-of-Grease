@@ -5,7 +5,7 @@ import vector
 
 class Projectile(generic_object.Generic_Object):
 
-    def __init__(self, pos_x: float, pos_y: float, direction_vector: vector.Vector2, projectile_type: str, sprite: dict = None, splat_sprite: dict = None, speed: float = 1.25, physics_type: str = "kinematic"):
+    def __init__(self, pos_x: float, pos_y: float, direction_vector: vector.Vector2, projectile_type: str, sprite: dict = None, splat_sprite: dict = None, speed: float = 1.0, physics_type: str = "kinematic"):
 
         super().__init__(pos_x, pos_y, sprite, speed, physics_type)
         g = self.global_variable
@@ -23,6 +23,13 @@ class Projectile(generic_object.Generic_Object):
         elif g["projectile_type"] == "mustard":
             g["animation"]["current_action"] = "mustardFly"
         g["animation"]["current_face"] = self.direction(direction_vector)
+
+        g["collision_box"] = {
+            "minus_width": 0,
+            "plus_width": self.spr.width * 9 / 10,
+            "minus_height": 0,
+            "plus_height": self.spr.height
+        }
 
         if splat_sprite is not None:
             g["splat_sprite"] = splat_sprite
@@ -65,3 +72,6 @@ class Projectile(generic_object.Generic_Object):
 
     def splat(self):
         self.global_variable["splatted"] = True
+
+    def is_splatted(self):
+        return self.global_variable["splatted"]

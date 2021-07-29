@@ -23,6 +23,8 @@ class Generic_Object:
             g["movement"]["gravity_base"] = 0.0
         g["movement"]["gravity"] = g["movement"]["gravity_base"]
 
+        g["collision_box"] = {}
+
         if sprite is not None:
             g["sprite"]: sprite_manager.Sprite = sprite
             g["frame"] = -1
@@ -45,6 +47,10 @@ class Generic_Object:
     @property
     def phys_type(self):
         return self.global_variable["movement"]["physics_type"]
+
+    @property
+    def collision(self):
+        return self.global_variable["collision_box"]
 
     def has_grav(self):
         return self.global_variable["movement"]["gravity"] == self.global_variable["movement"]["gravity_base"]

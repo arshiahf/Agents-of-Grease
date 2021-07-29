@@ -8,6 +8,7 @@ import json
 import vector
 import projectile
 import random
+import enemy
 
 
 class Application:
@@ -111,6 +112,22 @@ class Application:
 
         return None
 
+    def spawn_enemy(self, x_pos: float, y_pos: float):
+
+        g = self.global_variable
+        enemy_sprites = g["sprites"]["manager"]["enemies"]
+        size = random.choice(["small", "small", "small", "big"])
+        if size == "big":
+            new_enemy = enemy.Enemy(
+                x_pos, y_pos, "bigStand", enemy_sprites, size, 3.0)
+        else:
+            new_enemy = enemy.Enemy(
+                x_pos, y_pos, "smallStand", enemy_sprites, size)
+
+        g["objects"]["enemies"].append(new_enemy)
+
+        return None
+
     def get_input(self):
 
         g = self.global_variable
@@ -188,39 +205,28 @@ class Application:
         g["screen"]["window"].fill(g["screen"]["fill_color"])
         g["screen"]["window"].blit(g["map"]["image"], g["map"]["location"])
 
-        for plat in range(len(g["objects"]["platforms"])):
-            g["objects"]["platforms"][plat].update(
-                g["time"]["delta_time"], g["screen"]["window"])
+        for plat in g["objects"]["platforms"]:
+            plat.update(g["time"]["delta_time"], g["screen"]["window"])
 
-        mustard_limit = len(g["projectiles"]["mustard"])
-        mustard = 0
-        if mustard_limit > 0:
-            while mustard < mustard_limit:
-                must = g["projectiles"]["mustard"][mustard]
-                mustard += 1
-                if must.global_variable["dead"]:
-                    g["projectiles"]["mustard"].remove(must)
-                    mustard -= 1
-                    mustard_limit -= 1
-                    continue
-                if must.pos.x <= 0 or must.pos.x + must.spr.width >= g["screen"]["dimensions"][0]:
-                    must.splat()
-                must.update(g["time"]["delta_time"], g["screen"]["window"])
+        for enem in g["objects"]["enemies"]:
+            if not enem.update(g["time"]["delta_time"], g["screen"]["window"]):
+                g["objects"]["enemies"].remove(enem)
 
-        ketchup_limit = len(g["projectiles"]["ketchup"])
-        ketchup = 0
-        if ketchup_limit > 0:
-            while ketchup < ketchup_limit:
-                ketch = g["projectiles"]["ketchup"][ketchup]
-                ketchup += 1
-                if ketch.global_variable["dead"]:
-                    g["projectiles"]["ketchup"].remove(ketch)
-                    ketchup -= 1
-                    ketchup_limit -= 1
-                    continue
-                if ketch.pos.x <= 10 or ketch.pos.x + ketch.spr.width >= g["screen"]["dimensions"][0] - 10:
-                    ketch.splat()
-                ketch.update(g["time"]["delta_time"], g["screen"]["window"])
+        for must in g["projectiles"]["mustard"]:
+            if must.global_variable["dead"]:
+                g["projectiles"]["mustard"].remove(must)
+                continue
+            if must.pos.x <= 0 or must.pos.x + must.spr.width >= g["screen"]["dimensions"][0]:
+                must.splat()
+            must.update(g["time"]["delta_time"], g["screen"]["window"])
+
+        for ketch in g["projectiles"]["ketchup"]:
+            if ketch.global_variable["dead"]:
+                g["projectiles"]["ketchup"].remove(ketch)
+                continue
+            if ketch.pos.x <= 10 or ketch.pos.x + ketch.spr.width >= g["screen"]["dimensions"][0] - 10:
+                ketch.splat()
+            ketch.update(g["time"]["delta_time"], g["screen"]["window"])
 
         g["player"].update(g["time"]["delta_time"], g["screen"]["window"])
 
@@ -236,16 +242,34 @@ class Application:
         self.get_input()
         self.draw()
 
-        for other_object in range(len(g["objects"]["enemies"])):
-            if g["player"].collide(g["objects"]["enemies"][other_object]):
-                g["player"].global_variable["animation"]["current_action"] = "hurt"
-                g["objects"]["enemies"][other_object].global_variable["animation"]["current_action"] = "attack"
+        for enemy_object in g["objects"]["enemies"]:
+            if g["player"].collide(enemy_object) and enemy_object.size == "big":
+                g["player"].hurt(enemy_object.knockback)
 
-        for other_object in range(len(g["objects"]["platforms"])):
-            if not g["player"].collide(g["objects"]["platforms"][other_object]):
+        for plat_object in g["objects"]["platforms"]:
+            if not g["player"].collide(plat_object):
                 g["player"].restore_grav()
             else:
                 break
+
+        for enemy_object in g["objects"]["enemies"]:
+            for plat_object in g["objects"]["platforms"]:
+                if not enemy_object.collide(plat_object):
+                    enemy_object.restore_grav()
+                else:
+                    break
+
+        for enemy_object in g["objects"]["enemies"]:
+            for ketchup in g["projectiles"]["ketchup"]:
+                if enemy_object.collide(ketchup) and not ketchup.is_splatted():
+                    enemy_object.hurt("ketchup", g["player"])
+                    ketchup.splat()
+                    break
+            for mustard in g["projectiles"]["mustard"]:
+                if enemy_object.collide(mustard) and not mustard.is_splatted():
+                    enemy_object.hurt("mustard", g["player"])
+                    mustard.splat()
+                    break
 
         if g["player"].pos.y + g["player"].spr.width * 3 / 4 >= g["screen"]["dimensions"][1]:
             g["done"] = True
@@ -268,6 +292,11 @@ class Application:
             g["screen"]["window"].fill(g["screen"]["fill_color"])
             g["screen"]["window"].blit(g["map"]["image"], g["map"]["location"])
             g["time"]["delta_time"] = g["time"]["clock"].tick() / 1000
+
+            for plat in range(len(g["objects"]["platforms"])):
+                g["objects"]["platforms"][plat].update(
+                    g["time"]["delta_time"], g["screen"]["window"])
+
             if glob["frame"] < 1:
                 if glob["animation"]["timer"] > 0:
                     glob["animation"]["timer"] -= g["time"]["delta_time"]
@@ -287,10 +316,6 @@ class Application:
                                     g["screen"]["window"], glob["animation"]
                                     ["current_face"])
 
-            for plat in range(len(g["objects"]["platforms"])):
-                g["objects"]["platforms"][plat].update(
-                    g["time"]["delta_time"], g["screen"]["window"])
-
             end_timer -= g["time"]["delta_time"]
             pygame.display.flip()
             pygame.event.pump()
@@ -304,6 +329,9 @@ class Application:
 
         self.make_player(g["screen"]["center"][0], g["screen"]["center"]
                          [1] - 75, "standGun", g["sprites"]["manager"]["hotdog"])
+
+        self.spawn_enemy(g["screen"]["dimensions"][0] * 3 / 16,
+                         g["screen"]["dimensions"][1] * 1 / 4)
 
         while not g["done"]:
 

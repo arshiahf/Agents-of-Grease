@@ -1,12 +1,11 @@
 import generic_object
-import math
 
 
 class Character(generic_object.Generic_Object):
 
-    def __init__(self, pos_x: float, pos_y: float, current_action: str, sprite: dict = None, speed: float = 0.0, current_face: float = 0.0, base_speed: float = 1.0):
+    def __init__(self, pos_x: float, pos_y: float, current_action: str, sprite: dict = None, speed: float = 0.0, current_face: float = 0.0, base_speed: float = 1.0, physics_type: str = "dynamic"):
 
-        super().__init__(pos_x, pos_y, sprite, speed)
+        super().__init__(pos_x, pos_y, sprite, speed, physics_type)
 
         g = self.global_variable
         g["animation"] = {}
@@ -21,6 +20,10 @@ class Character(generic_object.Generic_Object):
         g["movement"]["vector_y_adjust"] = 0
         g["movement"]["jump_strength"] = 1.0
 
+    @property
+    def category(self):
+        return self.global_variable["category"]
+
     def move(self, x_adjust: float = 0.0, y_adjust: float = 0.0):
         g = self.global_variable
         g["movement"]["vector_x_adjust"] += x_adjust
@@ -33,19 +36,22 @@ class Character(generic_object.Generic_Object):
 
     def collide(self, other_object: generic_object.Generic_Object) -> bool:
         g = self.global_variable
-        self_min_width = self.pos.x + self.spr.width * 3 / 8
-        self_plus_width = self.pos.x + self.spr.width * 5 / 8
-        other_min_width = other_object.pos.x
-        other_plus_width = other_object.pos.x + other_object.spr.width * 9 / 10
-        self_min_height = self.pos.y - self.spr.height / 2
-        self_plus_height = self.pos.y + self.spr.height / 2
-        other_min_height = other_object.pos.y - other_object.spr.height
-        other_plus_height = other_object.pos.y + other_object.spr.height / 2
+        self_coll = self.collision
+        other_coll = other_object.collision
 
-        if other_object.phys_type == "static" or other_object.phys_type == "kinematic":
-            if self_plus_height <= other_min_height and self_plus_height > other_min_height - 5:
-                if self_plus_width >= other_min_width and self_min_width <= other_plus_width:
-                    if g["movement"]["vector_y_adjust"] >= 0.0:
-                        g["movement"]["gravity"] = 0.0
-                        return True
-            return False
+        if other_object.phys_type == "static":
+            if self.pos.y + self_coll["plus_height"] <= other_object.pos.y + other_coll["minus_height"]:
+                if self.pos.y + self_coll["plus_height"] > other_object.pos.y + other_coll["minus_height"] - 5:
+                    if self.pos.x + self_coll["plus_width"] >= other_object.pos.x + other_coll["minus_width"]:
+                        if self.pos.x + self_coll["minus_width"] <= other_object.pos.x + other_coll["plus_width"]:
+                            if g["movement"]["vector_y_adjust"] >= 0.0:
+                                g["movement"]["vector_y_adjust"] = 0.0
+                                g["movement"]["gravity"] = 0.0
+                                return True
+        elif other_object.phys_type in ["kinematic"]:
+            if self.pos.y + self_coll["minus_height"] < other_object.pos.y + other_coll["plus_height"]:
+                if self.pos.y + self_coll["plus_height"] > other_object.pos.y + other_coll["minus_height"]:
+                    if self.pos.x + self_coll["minus_width"] < other_object.pos.x + other_coll["plus_width"]:
+                        if self.pos.x + self_coll["plus_width"] > other_object.pos.x + other_coll["minus_width"]:
+                            return True
+        return False
