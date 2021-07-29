@@ -97,7 +97,7 @@ make_items
   ### For Paige to fill in ###
 
 make_projectile
-  ### For Paige to fill in ###
+  Creates a projectile from the gun and disapears when it touches the enemy or goes offscreen
 
 make_platform
   Creates a single platform instance and puts it into "objects"->"platforms"
