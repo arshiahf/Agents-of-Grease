@@ -6,7 +6,7 @@ import plat
 import os
 import json
 import vector
-import projectile
+import Projectile
 import random
 import enemy
 
@@ -197,7 +197,7 @@ class Application:
                         mouse_vector.x = 2 * g["screen"]["dimensions"][0]
                     projectile_type = random.choice(["ketchup", "mustard"])
                     mouse_vector.y = player_y
-                    new_proj = projectile.Projectile(
+                    new_proj = Projectile.Projectile(
                         player_x, player_y, mouse_vector, projectile_type, sprite=g["sprites"]["manager"]["projectiles"], splat_sprite=g["sprites"]["manager"]["projectiles_splats"])
                     if projectile_type == "ketchup":
                         g["projectiles"]["ketchup"].append(new_proj)
