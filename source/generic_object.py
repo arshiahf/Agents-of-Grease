@@ -53,7 +53,7 @@ class Generic_Object:
         return self.global_variable["collision_box"]
 
     def has_grav(self):
-        return self.global_variable["movement"]["gravity"] == self.global_variable["movement"]["gravity_base"]
+        return self.global_variable["movement"]["gravity"] > 0
 
     def restore_grav(self):
         self.global_variable["movement"]["gravity"] = self.global_variable["movement"]["gravity_base"]

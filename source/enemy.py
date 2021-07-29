@@ -5,7 +5,7 @@ import generic_object
 
 class Enemy(character.Character):
 
-    def __init__(self, pos_x: float, pos_y: float, current_action: str, sprite: dict = None, size: str = "small", knockback: float = 0.0, speed: float = 0.0, current_face: float = 0.0, base_speed: float = 0.75, physics_type: str = "dynamic"):
+    def __init__(self, pos_x: float, pos_y: float, current_action: str, sprite: dict = None, size: str = "small", knockback: float = 0.0, speed: float = 0.0, current_face: float = 0.0, base_speed: float = 0.1, physics_type: str = "dynamic"):
 
         super().__init__(pos_x, pos_y, current_action,
                          sprite, speed, current_face, base_speed, physics_type)
@@ -13,12 +13,19 @@ class Enemy(character.Character):
 
         g["offense"] = {}
         g["offense"]["knockback"] = knockback
-        g["offense"]["charge_speed"] = 1.15
+        g["offense"]["charge_speed"] = 0.2
         g["charging"] = False
 
-        g["movement"]["jump_strength"] = -2.5
+        g["movement"]["jump_strength"] = -1.5
+        g["movement"]["free_jump"] = False
+        g["movement"]["gravity_base"] = 0.01
+        g["movement"]["gravity"] = g["movement"]["gravity_base"]
 
-        g["target"] = "campfire"
+        g["movement"]["timer_base"] = 0.05
+        g["movement"]["timer"] = g["movement"]["timer_base"]
+
+        g["target"] = None
+        g["landed"] = False
 
         g["size"] = size
         if g["size"] == "big":
@@ -79,13 +86,32 @@ class Enemy(character.Character):
             self.animate(g["animation"]["current_action"],
                          map, g["animation"]["current_face"])
 
-        self.travel(g["movement"]["vector"], g["movement"]["speed"])
-        g["movement"]["vector"] = g["position"].copy()
-        g["movement"]["vector"].x += g["movement"]["vector_x_adjust"]
-        g["movement"]["vector"].y += g["movement"]["vector_y_adjust"]
-        g["movement"]["vector_y_adjust"] += g["movement"]["gravity"]
-        if g["movement"]["gravity"] == 0.0 and g["movement"]["vector_y_adjust"] >= 0:
-            g["movement"]["vector_y_adjust"] = 0.0
+        if g["movement"]["timer"] > 0:
+            g["movement"]["timer"] -= delta_time
+        else:
+            g["movement"]["timer_base"]
+            if not g["landed"]:
+                self.travel(g["movement"]["vector"], g["movement"]["speed"])
+                g["movement"]["vector"] = g["position"].copy()
+                g["movement"]["vector"].y += g["movement"]["vector_y_adjust"]
+                g["movement"]["vector_y_adjust"] += g["movement"]["gravity"]
+                if g["movement"]["gravity"] == 0.0:
+                    g["movement"]["vector_y_adjust"] = 0.0
+                    g["landed"] = True
+
+            if g["landed"]:
+                self.travel(g["movement"]["vector"], g["movement"]["speed"])
+                g["movement"]["vector"].x = g["target"].pos.x
+                g["movement"]["vector"].y = self.pos.y
+                g["movement"]["vector"].x += g["movement"]["speed"]
+                g["movement"]["vector"].y += g["movement"]["vector_y_adjust"]
+                g["movement"]["vector_y_adjust"] += g["movement"]["gravity"]
+                if g["movement"]["gravity"] == 0.0 and g["movement"]["vector_y_adjust"] >= 0:
+                    g["movement"]["vector_y_adjust"] = 0.0
+                if g["movement"]["gravity"] == 0.0:
+                    if g["movement"]["vector_y_adjust"] == 0.0:
+                        if g["movement"]["free_jump"]:
+                            g["movement"]["free_jump"] = False
 
         return g["alive"]
 
@@ -103,6 +129,17 @@ class Enemy(character.Character):
     def jumping(self):
         return self.global_variable["movement"]["vector_y_adjust"] < 0.0
 
+    def change_target(self, target: generic_object.Generic_Object):
+        self.global_variable["target"] = target
+
+    # def restore_grav(self):
+    #     g = self.global_variable
+    #     g["movement"]["gravity"] = g["movement"]["gravity_base"]
+    #     if not g["movement"]["free_jump"] and g["landed"]:
+    #         g["movement"]["vector_y_adjust"] = 0.0
+    #         g["movement"]["vector_y_adjust"] += g["movement"]["jump_strength"]
+    #         g["movement"]["free_jump"] = True
+
     def hurt(self, projectile_type: str, curr_player: character.Character):
         g = self.global_variable
         g["health"] -= 1
@@ -119,4 +156,4 @@ class Enemy(character.Character):
                     g["animation"]["current_action"] = "smallDieMustard"
         elif g["health"] == 1 and g["size"] == "big":
             g["animation"]["current_action"] = "bigCharge"
-            g["movement"]["vector"] = curr_player.pos.copy()
+            g["target"] = curr_player

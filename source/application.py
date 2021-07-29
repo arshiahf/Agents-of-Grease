@@ -27,8 +27,7 @@ class Application:
             g["screen"]["dimensions"])
         g["time"] = {}
         g["time"]["clock"] = pygame.time.Clock()
-        g["time"]["delta_time"] = g["time"]["clock"].tick()
-        g["time"]["enemy_timer_base"] = 5.0
+        g["time"]["enemy_timer_base"] = 2.5
         g["time"]["enemy_timer"] = g["time"]["enemy_timer_base"]
 
         g["error"] = {}
@@ -126,6 +125,8 @@ class Application:
             new_enemy = enemy.Enemy(
                 x_pos, y_pos, "smallStand", enemy_sprites, size)
 
+        # new_enemy.change_target(g["objects"]["fire"])
+        new_enemy.change_target(g["player"])
         g["objects"]["enemies"].append(new_enemy)
 
         return None
@@ -241,9 +242,6 @@ class Application:
         g = self.global_variable
         g["time"]["delta_time"] = g["time"]["clock"].tick() / 1000
 
-        self.get_input()
-        self.draw()
-
         for enemy_object in g["objects"]["enemies"]:
             if g["player"].collide(enemy_object) and enemy_object.size == "big":
                 g["player"].hurt(enemy_object.knockback, enemy_object)
@@ -272,6 +270,8 @@ class Application:
                     enemy_object.hurt("mustard", g["player"])
                     mustard.splat()
                     break
+            if enemy_object.pos.y >= g["screen"]["dimensions"][1]:
+                enemy_object.global_variable["health"] = 0
 
         if g["time"]["enemy_timer"] > 0:
             g["time"]["enemy_timer"] -= g["time"]["delta_time"]
@@ -285,6 +285,9 @@ class Application:
 
         if g["player"].pos.y + g["player"].spr.width * 3 / 4 >= g["screen"]["dimensions"][1]:
             g["done"] = True
+
+        self.get_input()
+        self.draw()
 
         pygame.event.pump()
 

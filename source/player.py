@@ -1,7 +1,6 @@
 import character
 import pygame
 import random
-import enemy
 import generic_object
 
 
@@ -85,7 +84,7 @@ class Player(character.Character):
     def jumping(self):
         return self.global_variable["movement"]["vector_y_adjust"] < 0.0
 
-    def hurt(self, knockback: float, other_object: enemy.Enemy):
+    def hurt(self, knockback: float, other_object: generic_object.Generic_Object):
         g = self.global_variable
 
         g["animation"]["current_action"] = "hurt"
