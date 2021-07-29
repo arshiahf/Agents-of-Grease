@@ -92,3 +92,6 @@ Improved collision handling for all units, made enemies killable
 
 4:50 a.m.
 Implemented enemy spawning mechanic
+
+8:00 a.m.
+Enemies can now establish a target and move towards it
