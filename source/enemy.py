@@ -40,7 +40,7 @@ class Enemy(character.Character):
             g["collision_box"] = {
                 "minus_width": self.spr.width * 2 / 5,
                 "plus_width": self.spr.width * 3 / 5,
-                "minus_height": self.spr.height * 1 / 2,
+                "minus_height": self.spr.height * 1 / 4, # change srite height from 1/2 to 1/4, seemed to fix hitbox issue
                 "plus_height": self.spr.height
             }
             g["health"] = 1
