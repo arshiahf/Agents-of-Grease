@@ -286,7 +286,7 @@ class Application:
                     mustard.splat()
                     break
             if enemy_object.pos.y >= g["screen"]["dimensions"][1]:
-                enemy_object.global_variable["health"] = 0
+                g["objects"]["enemies"].remove(enemy_object)
 
         if g["time"]["enemy_timer"] > 0:
             g["time"]["enemy_timer"] -= g["time"]["delta_time"]
