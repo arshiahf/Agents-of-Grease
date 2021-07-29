@@ -69,7 +69,9 @@ class Player(character.Character):
         if g["movement"]["momentum"] != 0:
             g["movement"]["momentum_vector"] = self.pos
             g["movement"]["momentum_vector"].x += g["movement"]["momentum"]
-            g["movement"]["momentum"] -= g["movement"]["momentum_base"] * 1 / 10
+            g["movement"]["vector_y_adjust"] -= abs(
+                g["movement"]["momentum"] * 1/50)
+            g["movement"]["momentum"] -= g["movement"]["momentum_base"] * 1 / 50
             self.travel(g["movement"]["momentum_vector"],
                         g["movement"]["momentum"])
             if 0.001 > g["movement"]["momentum"] and -0.001 < g["movement"]["momentum"]:
@@ -87,7 +89,7 @@ class Player(character.Character):
         g = self.global_variable
 
         g["animation"]["current_action"] = "hurt"
-        if self.pos - other_object.pos < 0:
+        if self.pos.x - other_object.pos.x < 0:
             g["movement"]["momentum"] = knockback
         else:
             g["movement"]["momentum"] = -knockback

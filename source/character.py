@@ -48,7 +48,7 @@ class Character(generic_object.Generic_Object):
                                 g["movement"]["vector_y_adjust"] = 0.0
                                 g["movement"]["gravity"] = 0.0
                                 return True
-        elif other_object.phys_type in ["kinematic"]:
+        elif other_object.phys_type in ["kinematic", "dynamic"]:
             if self.pos.y + self_coll["minus_height"] < other_object.pos.y + other_coll["plus_height"]:
                 if self.pos.y + self_coll["plus_height"] > other_object.pos.y + other_coll["minus_height"]:
                     if self.pos.x + self_coll["minus_width"] < other_object.pos.x + other_coll["plus_width"]:

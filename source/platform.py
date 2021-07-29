@@ -14,7 +14,7 @@ class Platform(generic_object.Generic_Object):
         g["collision_box"] = {
             "minus_width": 0,
             "plus_width": self.spr.width * 9 / 10,
-            "minus_height": self.spr.height,
+            "minus_height": self.spr.height * 1 / 8,
             "plus_height": self.spr.height * 1 / 2
         }
 

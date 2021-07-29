@@ -28,6 +28,8 @@ class Application:
         g["time"] = {}
         g["time"]["clock"] = pygame.time.Clock()
         g["time"]["delta_time"] = g["time"]["clock"].tick()
+        g["time"]["enemy_timer_base"] = 5.0
+        g["time"]["enemy_timer"] = g["time"]["enemy_timer_base"]
 
         g["error"] = {}
         g["error"]["keys"] = {}
@@ -244,7 +246,7 @@ class Application:
 
         for enemy_object in g["objects"]["enemies"]:
             if g["player"].collide(enemy_object) and enemy_object.size == "big":
-                g["player"].hurt(enemy_object.knockback)
+                g["player"].hurt(enemy_object.knockback, enemy_object)
 
         for plat_object in g["objects"]["platforms"]:
             if not g["player"].collide(plat_object):
@@ -270,6 +272,16 @@ class Application:
                     enemy_object.hurt("mustard", g["player"])
                     mustard.splat()
                     break
+
+        if g["time"]["enemy_timer"] > 0:
+            g["time"]["enemy_timer"] -= g["time"]["delta_time"]
+        else:
+            g["time"]["enemy_timer"] = g["time"]["enemy_timer_base"]
+            x_pos = random.randint(
+                int(g["screen"]["dimensions"][0] * 1 / 6), int(g["screen"]["dimensions"][0] * 1 / 2))
+            y_pos = random.randint(
+                int(g["screen"]["dimensions"][1] * 1 / 8), int(g["screen"]["dimensions"][1] * 3 / 8))
+            self.spawn_enemy(x_pos, y_pos)
 
         if g["player"].pos.y + g["player"].spr.width * 3 / 4 >= g["screen"]["dimensions"][1]:
             g["done"] = True
@@ -329,9 +341,6 @@ class Application:
 
         self.make_player(g["screen"]["center"][0], g["screen"]["center"]
                          [1] - 75, "standGun", g["sprites"]["manager"]["hotdog"])
-
-        self.spawn_enemy(g["screen"]["dimensions"][0] * 3 / 16,
-                         g["screen"]["dimensions"][1] * 1 / 4)
 
         while not g["done"]:
 
