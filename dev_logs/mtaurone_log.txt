@@ -89,3 +89,6 @@ Finished with projectile handling and enemy/projectile sprite JSON sheets
 7/29/2021
 4:00 a.m.
 Improved collision handling for all units, made enemies killable
+
+4:50 a.m.
+Implemented enemy spawning mechanic
